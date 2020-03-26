@@ -1,23 +1,23 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "415a286e0c601c750b77f2250c5c5db7",
+    "revision": "b133a6801491fb80249fad7a447dceb9",
     "url": "/CYFHomeworkTracker/index.html"
   },
   {
-    "revision": "79198b49e342ef88e121",
+    "revision": "b1104e7450da06372c8c",
     "url": "/CYFHomeworkTracker/static/css/main.5f361e03.chunk.css"
   },
   {
-    "revision": "b4e3df900f95a6dc6dd9",
-    "url": "/CYFHomeworkTracker/static/js/2.92d70eb7.chunk.js"
+    "revision": "ee9e347a4a49a1cc5361",
+    "url": "/CYFHomeworkTracker/static/js/2.9a1e2be6.chunk.js"
   },
   {
-    "revision": "e88a3e95b5364d46e95b35ae8c0dc27d",
-    "url": "/CYFHomeworkTracker/static/js/2.92d70eb7.chunk.js.LICENSE.txt"
+    "revision": "9416fd4c4cf7ae2ee54a759dffdcd421",
+    "url": "/CYFHomeworkTracker/static/js/2.9a1e2be6.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "79198b49e342ef88e121",
-    "url": "/CYFHomeworkTracker/static/js/main.3c5e3da5.chunk.js"
+    "revision": "b1104e7450da06372c8c",
+    "url": "/CYFHomeworkTracker/static/js/main.5dea28f3.chunk.js"
   },
   {
     "revision": "0c8f4710a52dead5e2ab",
