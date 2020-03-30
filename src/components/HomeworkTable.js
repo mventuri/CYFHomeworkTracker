@@ -47,7 +47,7 @@ const columns = [
     title: "Reviewed? (Click to mark as done)",
     defaultSortOrder: "asc",
     render: (rowData, t) => {
-      let reviewed = rowData.labels.some(label => label.name == "reviewed");
+      let reviewed = rowData.labels.some(label => label.name === "reviewed");
 
       if (reviewed) {
         return (

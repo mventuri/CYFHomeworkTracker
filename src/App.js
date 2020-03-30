@@ -16,6 +16,8 @@ class App extends React.Component {
     this.handleClose = this.handleClose.bind(this);
     this.githubRepo = this.props.githubRepo;
     this.authRepo = this.props.authRepo;
+
+    console.log("Being");
   }
 
   componentDidMount() {
@@ -25,18 +27,22 @@ class App extends React.Component {
       isLoading: true
     });
 
+    console.log("componentDidMount");
+
     this.authRepo.registerOnAuthListener(
       user => {
+        console.log("user");
+
         if (user) {
           this.githubRepo.setToken().then(u => {
             this.loadHomeworkRepos();
           });
         } else {
-          history.replace("/login");
+          history.replace(process.env.PUBLIC_URL + "/login");
         }
       },
       () => {
-        history.replace("/login");
+        history.replace(process.env.PUBLIC_URL + "/login");
       },
       error => {
         console.log(error);
