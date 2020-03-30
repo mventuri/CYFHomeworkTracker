@@ -1,18 +1,7 @@
 import app from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
-
-// TODO: Replace the following with your app's Firebase project configuration
-var firebaseConfig = {
-  apiKey: "AIzaSyAMog4hpMuZVXjWZT5zw5HXaYLq_dF61Ho",
-  authDomain: "cyfhomeworktracker.firebaseapp.com",
-  databaseURL: "https://cyfhomeworktracker.firebaseio.com",
-  projectId: "cyfhomeworktracker",
-  storageBucket: "cyfhomeworktracker.appspot.com",
-  messagingSenderId: "708461557840",
-  appId: "1:708461557840:web:2449c2f1daabec198f3955",
-  measurementId: "G-ZE8EQM853K"
-};
+import firebaseConfig from "./repo/firebaseConfig";
 
 class Firebase {
   constructor() {
