@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "c3dc5f848038d1689f96491b42323725",
+    "revision": "5f685f8aee7458e9cbddceef51981904",
     "url": "/CYFHomeworkTracker/index.html"
   },
   {
-    "revision": "6f7db00f2185d0ec466f",
+    "revision": "bc8a4cbd1f2748307589",
     "url": "/CYFHomeworkTracker/static/css/main.5f361e03.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/CYFHomeworkTracker/static/js/2.8028e3cf.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "6f7db00f2185d0ec466f",
-    "url": "/CYFHomeworkTracker/static/js/main.12a8dc90.chunk.js"
+    "revision": "bc8a4cbd1f2748307589",
+    "url": "/CYFHomeworkTracker/static/js/main.ffe48d41.chunk.js"
   },
   {
     "revision": "0c8f4710a52dead5e2ab",
