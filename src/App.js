@@ -32,11 +32,11 @@ class App extends React.Component {
             this.loadHomeworkRepos();
           });
         } else {
-          history.replace(process.env.PUBLIC_URL + "/login");
+          history.replace("/login");
         }
       },
       () => {
-        history.replace(process.env.PUBLIC_URL + "/login");
+        history.replace("/login");
       },
       error => {
         console.log(error);
