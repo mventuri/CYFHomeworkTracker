@@ -1,0 +1,109 @@
+export default [
+  {
+    name: "London",
+    tracker:
+      "https://docs.google.com/spreadsheets/d/1B_08AtHWy8FwGnfjTmj5TzuNKtBf2ov31BFPnJs2DR0/edit#gid=0",
+    students: [
+      "ferhatu",
+      "Hamidreza-Fakharzadeh",
+      "minwwgo",
+      "yusuf963",
+      "Rayhan94",
+      "Sonjide",
+      "TamBahri",
+      "cyeburu",
+      "Hanifix",
+      "HarrisSheraz20",
+      "279Roxana",
+      "sabia-m",
+      "abbasmokhtari",
+      "Jreo123",
+      "kiowd",
+      "SCavus",
+      "tayfuntayfun",
+      "AKaramifar",
+      "AlexeyBrambalov",
+      "naderakhgari",
+      "leealex88",
+      "Alisina92",
+      "banirezaie",
+      "cockochan",
+      "abcelen",
+      "babakjahangiri",
+      "ellietms",
+      "sugunum",
+      "mahmutsel",
+      "melanieet",
+      "AlexandruBudaca",
+      "byohannes",
+      "Erwin6997",
+      "mnashawati",
+      "tanianm"
+    ]
+  },
+  {
+    name: "Manchester",
+    tracker:
+      "https://docs.google.com/spreadsheets/d/1o70LeHJfe8VzMQzv7hKfDV3qzuKpX9cNfB7houm9XQQ/edit#gid=1726249445",
+    students: [
+      "Vijith46",
+      "ghost",
+      "minwwgo",
+      "bridgetkalinda",
+      "maali9",
+      "ramanan2017",
+      "kiyaGu",
+      "mhallaq",
+      "supertata",
+      "elsahib",
+      "NawalC",
+      "cobrac2001",
+      "FatimaAbdimalik",
+      "OBakir90",
+      "erol-g",
+      "shaimaa-stack",
+      "halitos",
+      "Taslima26",
+      "SULAIMAN-100",
+      "Leidagandy",
+      "Iman-feisali",
+      "Hedyeh65",
+      "AlanaTheQueen",
+      "bash93",
+      "shahdalhaj",
+      "Buchraatkeh1984",
+      "zision71",
+      "FarhanaFKhan",
+      "roza8765",
+      "tintax01",
+      "Bek0o0",
+      "azadaafo"
+    ]
+  },
+  {
+    name: "Scotland",
+    tracker:
+      "https://docs.google.com/spreadsheets/d/12HcEzJKENgAcEeVN3X-zo-LrwX10MFpF3UX8L86nnwI/edit#gid=1726249445",
+    students: [
+      "andsemenov",
+      "Arasko87",
+      "hacersk",
+      "ismihan34",
+      "mara-ber",
+      "AaishaMohamad",
+      "Munish909",
+      "r4c00n4",
+      "NataliaCoder",
+      "Ruthsuleiman",
+      "Sportysam2000",
+      "dreamycodex",
+      "zuhalzuhal"
+    ]
+  },
+  {
+    name: "Birmingham",
+    tracker:
+      "https://docs.google.com/spreadsheets/d/1EWtTEGuu8Or0RLMEYM72RBsbhz7fL4WBOEQCZhQ_bEA/edit#gid=1726249445",
+    students: []
+  }
+];

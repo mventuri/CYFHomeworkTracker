@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import "./index.css";
 import App from "./App";
 import Firebase from "./repo/Firebase.js";
-import SplashScreen from "./screen/SplashScreen";
 import LoginScreen from "./screen/LoginScreen";
 import AuthRepository from "./repo/AuthRepository";
 import GithubRepository from "./repo/GithubRepository";
@@ -15,14 +14,14 @@ let githubRepo = new GithubRepository(authRepo);
 const routing = (
   <Router>
     <div>
-      <Route path="/" component={() => <SplashScreen authRepo={authRepo} />} />
       <Route
-        path="/login"
-        component={() => <LoginScreen authRepo={authRepo} />}
+        exact
+        path={process.env.PUBLIC_URL + "/"}
+        component={() => <App githubRepo={githubRepo} authRepo={authRepo} />}
       />
       <Route
-        path="/main"
-        component={() => <App githubRepo={githubRepo} authRepo={authRepo} />}
+        path={process.env.PUBLIC_URL + "/login"}
+        component={() => <LoginScreen authRepo={authRepo} />}
       />
     </div>
   </Router>

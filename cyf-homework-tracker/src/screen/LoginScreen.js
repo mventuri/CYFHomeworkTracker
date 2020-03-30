@@ -17,7 +17,7 @@ class LoginScreen extends React.Component {
     this.authRepo.registerOnAuthListener(
       user => {
         if (user) {
-          history.push("/main");
+          history.push(process.env.PUBLIC_URL + "/");
           this.showToast("User Logged In. Welcome " + user.email);
         }
       },

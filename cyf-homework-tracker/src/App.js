@@ -1,7 +1,8 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import HomeworkTable from "./components/HomeworkTable";
+import homeworkRepos from "./config/HomeworkRepositories.js";
+import { withRouter } from "react-router-dom";
 
 class App extends React.Component {
   constructor(props) {
@@ -18,19 +19,45 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    let that = this;
+    let { history } = this.props;
 
     this.setState({
       isLoading: true
     });
 
-    this.props.authRepo.registerOnAuthListener(user => {
-      this.githubRepo.getHomeworkToReview("js-exercises").then(pulls => {
-        console.log(pulls);
-        that.setState({
-          isLoading: false,
-          data: pulls
-        });
+    this.authRepo.registerOnAuthListener(
+      user => {
+        if (user) {
+          this.githubRepo.setToken().then(u => {
+            this.loadHomeworkRepos();
+          });
+        } else {
+          history.replace(process.env.PUBLIC_URL + "/login");
+        }
+      },
+      () => {
+        history.replace(process.env.PUBLIC_URL + "/login");
+      },
+      error => {
+        console.log(error);
+      }
+    );
+  }
+
+  loadHomeworkRepos() {
+    homeworkRepos.forEach(repoName => {
+      this.loadRepo(repoName);
+    });
+  }
+
+  loadRepo(repoName) {
+    let that = this;
+
+    this.githubRepo.getHomeworkToReview(repoName).then(pulls => {
+      console.log(pulls);
+      that.setState({
+        isLoading: false,
+        data: that.state.data.concat(pulls)
       });
     });
   }
@@ -57,4 +84,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default withRouter(App);

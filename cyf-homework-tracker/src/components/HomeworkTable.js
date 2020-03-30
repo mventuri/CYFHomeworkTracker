@@ -16,6 +16,7 @@ import Remove from "@material-ui/icons/Remove";
 import SaveAlt from "@material-ui/icons/SaveAlt";
 import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
+import cityConfig from "../config/CityConfig.js";
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -41,24 +42,53 @@ const tableIcons = {
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
 };
 
-const styles = theme => ({
-  fab: {
-    position: "absolute",
-    bottom: theme.spacing(2),
-    right: theme.spacing(2)
-  }
-});
-
 const columns = [
+  {
+    title: "Reviewed? (Click to mark as done)",
+    defaultSortOrder: "asc",
+    render: (rowData, t) => {
+      let reviewed = rowData.labels.some(label => label.name == "reviewed");
+
+      if (reviewed) {
+        return (
+          <button type="button" class="btn btn-success">
+            Reviewed
+          </button>
+        );
+      } else {
+        return (
+          <button type="button" class="btn btn-danger">
+            To Review
+          </button>
+        );
+      }
+    }
+  },
   { title: "Title", field: "title" },
   {
     title: "Student",
+    field: "user.login",
     render: rowData => {
       return <a href={rowData.user.html_url}>{rowData.user.login}</a>;
     }
   },
   {
+    title: "School",
+    render: rowData => {
+      let schoolName = "unknown";
+
+      cityConfig.forEach(location => {
+        if (location.students.includes(rowData.user.login)) {
+          schoolName = location.name;
+        }
+      });
+
+      return schoolName.toString();
+    }
+  },
+  {
     title: "Homework Module",
+    field: "base.repo.name",
     render: rowData => {
       return <a href={rowData.base.repo.html_url}>{rowData.base.repo.name}</a>;
     }
@@ -67,10 +97,11 @@ const columns = [
     render: rowData => {
       return (
         <a
-          class="btn btn-outline-primary"
+          className="btn btn-outline-primary"
           href={"https://www.gitpod.io/#" + rowData.html_url}
           role="button"
           target="_blank"
+          rel="noopener noreferrer"
         >
           View Source
         </a>
@@ -81,26 +112,21 @@ const columns = [
     render: rowData => {
       return (
         <a
-          class="btn btn-outline-secondary"
+          className="btn btn-outline-secondary"
           href={rowData.html_url}
           role="button"
           target="_blank"
+          rel="noopener noreferrer"
         >
           View Pull Request
         </a>
       );
     }
-  },
-  {
-    title: "Label",
-    field: "labels[0].name",
-    defaultGroupOrder: 0
   }
 ];
 
 const options = {
   pageSize: 20,
-  grouping: true,
   defaultExpanded: true
 };
 

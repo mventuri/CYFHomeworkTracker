@@ -45,12 +45,15 @@ class AuthRepository {
   }
 
   getToken() {
+    console.log("CURRENT_USER " + this.getCurrentUser().uid);
+
     return this.firebase
       .users()
       .doc(this.getCurrentUser().uid)
       .get()
       .then(user => {
-        return user.token;
+        console.log("TOKEN " + user.data().token);
+        return user.data().token;
       });
   }
 }
