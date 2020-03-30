@@ -1,8 +1,6 @@
 import React, { forwardRef } from "react";
 import MaterialTable from "material-table";
-import { withStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router-dom";
-
 import AddBox from "@material-ui/icons/AddBox";
 import ArrowUpward from "@material-ui/icons/ArrowUpward";
 import Check from "@material-ui/icons/Check";
@@ -54,13 +52,57 @@ const styles = theme => ({
 const columns = [
   { title: "Title", field: "title" },
   {
+    title: "Student",
+    render: rowData => {
+      return <a href={rowData.user.html_url}>{rowData.user.login}</a>;
+    }
+  },
+  {
     title: "Homework Module",
     render: rowData => {
-      console.log(rowData);
       return <a href={rowData.base.repo.html_url}>{rowData.base.repo.name}</a>;
     }
+  },
+  {
+    render: rowData => {
+      return (
+        <a
+          class="btn btn-outline-primary"
+          href={"https://www.gitpod.io/#" + rowData.html_url}
+          role="button"
+          target="_blank"
+        >
+          View Source
+        </a>
+      );
+    }
+  },
+  {
+    render: rowData => {
+      return (
+        <a
+          class="btn btn-outline-secondary"
+          href={rowData.html_url}
+          role="button"
+          target="_blank"
+        >
+          View Pull Request
+        </a>
+      );
+    }
+  },
+  {
+    title: "Label",
+    field: "labels[0].name",
+    defaultGroupOrder: 0
   }
 ];
+
+const options = {
+  pageSize: 20,
+  grouping: true,
+  defaultExpanded: true
+};
 
 function timestampToDate(timestamp) {
   var a = new Date(timestamp);
@@ -93,15 +135,14 @@ class HomeworkTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      columns: columns
+      columns: columns,
+      options: options
     };
   }
 
   componentWillReceiveProps() {}
 
   render() {
-    const { classes } = this.props;
-
     return (
       <MaterialTable
         icons={tableIcons}
@@ -109,6 +150,7 @@ class HomeworkTable extends React.Component {
         data={this.props.data}
         title=""
         isLoading={this.props.isLoading}
+        options={this.state.options}
       />
     );
   }

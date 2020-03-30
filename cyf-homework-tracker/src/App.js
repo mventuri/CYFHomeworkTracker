@@ -1,7 +1,6 @@
 import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
-import GithubRepository from "./repo/GithubRepository";
 import HomeworkTable from "./components/HomeworkTable";
 
 class App extends React.Component {
@@ -14,6 +13,8 @@ class App extends React.Component {
 
     this.handleClickOpen = this.handleClickOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    this.githubRepo = this.props.githubRepo;
+    this.authRepo = this.props.authRepo;
   }
 
   componentDidMount() {
@@ -22,11 +23,14 @@ class App extends React.Component {
     this.setState({
       isLoading: true
     });
-    new GithubRepository().getReposToReview("js-exercises").then(pulls => {
-      console.log(pulls);
-      that.setState({
-        isLoading: false,
-        data: pulls
+
+    this.props.authRepo.registerOnAuthListener(user => {
+      this.githubRepo.getHomeworkToReview("js-exercises").then(pulls => {
+        console.log(pulls);
+        that.setState({
+          isLoading: false,
+          data: pulls
+        });
       });
     });
   }

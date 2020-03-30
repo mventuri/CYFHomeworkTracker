@@ -1,7 +1,8 @@
 import { Octokit } from "@octokit/rest";
 
 class GithubRepository {
-  constructor() {
+  constructor(authRepo) {
+    this.authRepo = authRepo;
     this.octokit = new Octokit({
       userAgent: "CyfHomeworkTracker",
       log: {
@@ -18,18 +19,23 @@ class GithubRepository {
     });
   }
 
-  getReposToReview(repoName) {
-    return this.octokit.pulls
-      .list({
-        owner: "CodeYourFuture",
-        repo: repoName,
-        per_page: 100
+  getHomeworkToReview(repoName) {
+    return this.authRepo
+      .getToken()
+      .then(token => {
+        return this.octokit.pulls.list({
+          owner: "CodeYourFuture",
+          repo: repoName,
+          per_page: 100,
+          auth: token
+        });
       })
       .then(({ data }) => {
         return data.filter(pull => {
           return (
             pull.labels.some(label => {
-              return label.name === "to-review";
+              // return label.name === "to-review";
+              return true;
             }) > 0
           );
         });
