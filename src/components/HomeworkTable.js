@@ -164,10 +164,14 @@ function dateToString(a) {
     " " +
     year +
     " " +
-    ("0" + hour).slice(-2) +
+    formatTime(hour) +
     ":" +
-    ("0" + min).slice(-2)
+    formatTime(min)
   );
+}
+
+function formatTime(num) {
+  return ("0" + num).slice(-2);
 }
 
 class HomeworkTable extends React.Component {
