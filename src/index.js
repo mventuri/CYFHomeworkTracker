@@ -16,11 +16,11 @@ const routing = (
     <div>
       <Route
         exact
-        path={"/"}
+        path={process.env.PUBLIC_URL + "/"}
         component={() => <App githubRepo={githubRepo} authRepo={authRepo} />}
       />
       <Route
-        path={"/login"}
+        path={process.env.PUBLIC_URL + "/login"}
         component={() => <LoginScreen authRepo={authRepo} />}
       />
     </div>

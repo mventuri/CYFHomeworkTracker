@@ -9,7 +9,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       isLoading: false,
-      data: []
+      data: [],
     };
 
     this.handleClickOpen = this.handleClickOpen.bind(this);
@@ -24,17 +24,17 @@ class App extends React.Component {
     let { history } = this.props;
 
     this.setState({
-      isLoading: true
+      isLoading: true,
     });
 
     console.log("componentDidMount");
 
     this.authRepo.registerOnAuthListener(
-      user => {
+      (user) => {
         console.log("user");
 
         if (user) {
-          this.githubRepo.setToken().then(u => {
+          this.githubRepo.setToken().then((u) => {
             this.loadHomeworkRepos();
           });
         } else {
@@ -44,14 +44,14 @@ class App extends React.Component {
       () => {
         history.replace(process.env.PUBLIC_URL + "/login");
       },
-      error => {
+      (error) => {
         console.log(error);
       }
     );
   }
 
   loadHomeworkRepos() {
-    homeworkRepos.forEach(repoName => {
+    homeworkRepos.forEach((repoName) => {
       this.loadRepo(repoName);
     });
   }
@@ -59,11 +59,11 @@ class App extends React.Component {
   loadRepo(repoName) {
     let that = this;
 
-    this.githubRepo.getHomeworkToReview(repoName).then(pulls => {
+    this.githubRepo.getHomeworkToReview(repoName).then((pulls) => {
       console.log(pulls);
       that.setState({
         isLoading: false,
-        data: that.state.data.concat(pulls)
+        data: that.state.data.concat(pulls),
       });
     });
   }

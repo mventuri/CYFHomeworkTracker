@@ -39,7 +39,7 @@ const tableIcons = {
   Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
   SortArrow: forwardRef((props, ref) => <ArrowUpward {...props} ref={ref} />),
   ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
-  ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
+  ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
 };
 
 const columns = [
@@ -47,54 +47,61 @@ const columns = [
     title: "Reviewed? (Click to mark as done)",
     defaultSortOrder: "asc",
     render: (rowData, t) => {
-      let reviewed = rowData.labels.some(label => label.name === "reviewed");
+      let reviewed = rowData.labels.some((label) => label.name === "reviewed");
 
       if (reviewed) {
         return (
-          <button type="button" class="btn btn-success">
+          <button type="button" className="btn btn-success">
             Reviewed
           </button>
         );
       } else {
         return (
-          <button type="button" class="btn btn-danger">
+          <button type="button" className="btn btn-danger">
             To Review
           </button>
         );
       }
-    }
+    },
   },
   { title: "Title", field: "title" },
   {
     title: "Student",
     field: "user.login",
-    render: rowData => {
+    render: (rowData) => {
       return <a href={rowData.user.html_url}>{rowData.user.login}</a>;
-    }
+    },
   },
   {
     title: "School",
-    render: rowData => {
+    render: (rowData) => {
       let schoolName = "unknown";
 
-      cityConfig.forEach(location => {
+      cityConfig.forEach((location) => {
         if (location.students.includes(rowData.user.login)) {
           schoolName = location.name;
         }
       });
 
       return schoolName.toString();
-    }
+    },
   },
   {
     title: "Homework Module",
-    field: "base.repo.name",
-    render: rowData => {
-      return <a href={rowData.base.repo.html_url}>{rowData.base.repo.name}</a>;
-    }
+    field: "created_at",
+    render: (rowData) => {
+      return dateToString(new Date(rowData.created_at));
+    },
   },
   {
-    render: rowData => {
+    title: "Submitted",
+    field: "base.repo.name",
+    render: (rowData) => {
+      return <a href={rowData.base.repo.html_url}>{rowData.base.repo.name}</a>;
+    },
+  },
+  {
+    render: (rowData) => {
       return (
         <a
           className="btn btn-outline-primary"
@@ -106,10 +113,10 @@ const columns = [
           View Source
         </a>
       );
-    }
+    },
   },
   {
-    render: rowData => {
+    render: (rowData) => {
       return (
         <a
           className="btn btn-outline-secondary"
@@ -121,17 +128,16 @@ const columns = [
           View Pull Request
         </a>
       );
-    }
-  }
+    },
+  },
 ];
 
 const options = {
   pageSize: 20,
-  defaultExpanded: true
+  defaultExpanded: true,
 };
 
-function timestampToDate(timestamp) {
-  var a = new Date(timestamp);
+function dateToString(a) {
   var months = [
     "Jan",
     "Feb",
@@ -144,17 +150,24 @@ function timestampToDate(timestamp) {
     "Sep",
     "Oct",
     "Nov",
-    "Dec"
+    "Dec",
   ];
   var year = a.getFullYear();
   var month = months[a.getMonth()];
   var date = a.getDate();
   var hour = a.getHours();
   var min = a.getMinutes();
-  var sec = a.getSeconds();
-  var time =
-    date + " " + month + " " + year + " " + hour + ":" + min + ":" + sec;
-  return time;
+  return (
+    date +
+    " " +
+    month +
+    " " +
+    year +
+    " " +
+    ("0" + hour).slice(-2) +
+    ":" +
+    ("0" + min).slice(-2)
+  );
 }
 
 class HomeworkTable extends React.Component {
@@ -162,7 +175,7 @@ class HomeworkTable extends React.Component {
     super(props);
     this.state = {
       columns: columns,
-      options: options
+      options: options,
     };
   }
 

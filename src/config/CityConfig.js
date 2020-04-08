@@ -38,8 +38,8 @@ export default [
       "byohannes",
       "Erwin6997",
       "mnashawati",
-      "tanianm"
-    ]
+      "tanianm",
+    ],
   },
   {
     name: "Manchester",
@@ -77,8 +77,8 @@ export default [
       "roza8765",
       "tintax01",
       "Bek0o0",
-      "azadaafo"
-    ]
+      "azadaafo",
+    ],
   },
   {
     name: "Scotland",
@@ -97,13 +97,13 @@ export default [
       "Ruthsuleiman",
       "Sportysam2000",
       "dreamycodex",
-      "zuhalzuhal"
-    ]
+      "zuhalzuhal",
+    ],
   },
   {
     name: "Birmingham",
     tracker:
       "https://docs.google.com/spreadsheets/d/1EWtTEGuu8Or0RLMEYM72RBsbhz7fL4WBOEQCZhQ_bEA/edit#gid=1726249445",
-    students: []
-  }
+    students: [],
+  },
 ];
