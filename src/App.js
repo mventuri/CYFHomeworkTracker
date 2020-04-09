@@ -51,23 +51,13 @@ class App extends React.Component {
   }
 
   loadHomeworkRepos() {
-    homeworkRepos.forEach((repoName) => {
-      this.loadRepo(repoName);
-    });
-  }
-
-  loadRepo(repoName) {
-    let that = this;
-
-    this.githubRepo.getHomeworkToReview(repoName).then((pulls) => {
-      console.log(pulls);
-      that.setState({
+    this.githubRepo.getAllHomeworkToReview(homeworkRepos).then((pulls) => {
+      this.setState({
         isLoading: false,
-        data: that.state.data.concat(pulls),
+        data: pulls,
       });
     });
   }
-
   handleClickOpen = () => {
     this.setState({ dialogOpen: true });
   };

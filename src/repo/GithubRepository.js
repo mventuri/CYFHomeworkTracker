@@ -49,6 +49,24 @@ class GithubRepository {
       });
   }
 
+  getAllHomeworkToReview(repoNamesArray) {
+    let promises = repoNamesArray.map((repoName) => {
+      return this.getHomeworkToReview(repoName);
+    });
+
+    return Promise.all(promises).then((data) => {
+      return this.flatten(data);
+    });
+  }
+
+  flatten(arr) {
+    return arr.reduce((flat, toFlatten) => {
+      return flat.concat(
+        Array.isArray(toFlatten) ? this.flatten(toFlatten) : toFlatten
+      );
+    }, []);
+  }
+
   isNotReviewed(pullRequest) {
     let labels = pullRequest.labels;
 
