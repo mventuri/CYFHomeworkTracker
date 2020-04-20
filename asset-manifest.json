@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/CYFHomeworkTracker/static/css/main.367e1977.chunk.css",
-    "main.js": "/CYFHomeworkTracker/static/js/main.bd3c1a1f.chunk.js",
-    "main.js.map": "/CYFHomeworkTracker/static/js/main.bd3c1a1f.chunk.js.map",
+    "main.css": "/CYFHomeworkTracker/static/css/main.1d5a565c.chunk.css",
+    "main.js": "/CYFHomeworkTracker/static/js/main.b174801f.chunk.js",
+    "main.js.map": "/CYFHomeworkTracker/static/js/main.b174801f.chunk.js.map",
     "runtime-main.js": "/CYFHomeworkTracker/static/js/runtime-main.2b6c7119.js",
     "runtime-main.js.map": "/CYFHomeworkTracker/static/js/runtime-main.2b6c7119.js.map",
     "static/js/2.edc4154e.chunk.js": "/CYFHomeworkTracker/static/js/2.edc4154e.chunk.js",
     "static/js/2.edc4154e.chunk.js.map": "/CYFHomeworkTracker/static/js/2.edc4154e.chunk.js.map",
     "index.html": "/CYFHomeworkTracker/index.html",
-    "precache-manifest.234d25f8e7dc31e75f46197fa8460614.js": "/CYFHomeworkTracker/precache-manifest.234d25f8e7dc31e75f46197fa8460614.js",
+    "precache-manifest.ddc84b504be688514f0f5094235c8ff5.js": "/CYFHomeworkTracker/precache-manifest.ddc84b504be688514f0f5094235c8ff5.js",
     "service-worker.js": "/CYFHomeworkTracker/service-worker.js",
-    "static/css/main.367e1977.chunk.css.map": "/CYFHomeworkTracker/static/css/main.367e1977.chunk.css.map",
+    "static/css/main.1d5a565c.chunk.css.map": "/CYFHomeworkTracker/static/css/main.1d5a565c.chunk.css.map",
     "static/js/2.edc4154e.chunk.js.LICENSE.txt": "/CYFHomeworkTracker/static/js/2.edc4154e.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.2b6c7119.js",
     "static/js/2.edc4154e.chunk.js",
-    "static/css/main.367e1977.chunk.css",
-    "static/js/main.bd3c1a1f.chunk.js"
+    "static/css/main.1d5a565c.chunk.css",
+    "static/js/main.b174801f.chunk.js"
   ]
 }
