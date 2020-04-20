@@ -55,7 +55,16 @@ class GithubRepository {
     });
 
     return Promise.all(promises).then((data) => {
+      console.log(data);
       return this.flatten(data);
+    });
+  }
+
+  getAllHomeworkToReviewForSchool(repoNamesArray, school) {
+    return this.getAllHomeworkToReview(repoNamesArray).then((data) => {
+      return data.filter((homework) => {
+        return school.students.contains(homework.user.login);
+      });
     });
   }
 

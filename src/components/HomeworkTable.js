@@ -87,14 +87,14 @@ const columns = [
     },
   },
   {
-    title: "Homework Module",
+    title: "Submitted",
     field: "created_at",
     render: (rowData) => {
       return dateToString(new Date(rowData.created_at));
     },
   },
   {
-    title: "Submitted",
+    title: "Homework Module",
     field: "base.repo.name",
     render: (rowData) => {
       return <a href={rowData.base.repo.html_url}>{rowData.base.repo.name}</a>;
