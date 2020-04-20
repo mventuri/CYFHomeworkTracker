@@ -89,6 +89,7 @@ const columns = [
   {
     title: "Submitted",
     field: "created_at",
+    defaultSort: "asc",
     render: (rowData) => {
       return dateToString(new Date(rowData.created_at));
     },
