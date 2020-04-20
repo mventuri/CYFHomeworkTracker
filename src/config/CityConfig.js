@@ -48,7 +48,6 @@ export default [
     students: [
       "Vijith46",
       "ghost",
-      "minwwgo",
       "bridgetkalinda",
       "maali9",
       "ramanan2017",
