@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/CYFHomeworkTracker/precache-manifest.c70266753444547016ec5b2ed012e763.js"
+  "/CYFHomeworkTracker/precache-manifest.18f619c1366d2af11ff7ab892aeb4813.js"
 );
 
 self.addEventListener('message', (event) => {
