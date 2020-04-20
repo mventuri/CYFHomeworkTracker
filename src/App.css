@@ -13,9 +13,9 @@
   }
 }
 
-body {
-  background: url("https://source.unsplash.com/collection/backgrounds-%2F-textures")
-    no-repeat center center fixed;
+.background-body {
+  background: url("https://i.ibb.co/xmVg3FS/07.jpg") no-repeat center center
+    fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   background-size: cover;

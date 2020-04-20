@@ -87,7 +87,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="background-body">
         <nav className="navbar navbar-expand-lg navbar-light bg-light static-top mb-5 shadow">
           <div className="container">
             <a className="navbar-brand" href="#">
