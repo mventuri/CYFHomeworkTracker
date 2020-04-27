@@ -44,10 +44,10 @@ const tableIcons = {
 
 const columns = [
   {
-    title: "Reviewed? (Click to mark as done)",
     defaultSortOrder: "asc",
     render: (rowData, t) => {
       let reviewed = rowData.labels.some((label) => label.name === "reviewed");
+      let assignee = rowData.assignees[0];
 
       if (reviewed) {
         return (
@@ -55,9 +55,16 @@ const columns = [
             Reviewed
           </button>
         );
+      } else if (assignee != null) {
+        return (
+          <button type="button" className="btn btn-warning btn-sm">
+            In Review <br />
+            by {assignee.login}
+          </button>
+        );
       } else {
         return (
-          <button type="button" className="btn btn-danger">
+          <button type="button" className="btn btn-success btn-sm">
             To Review
           </button>
         );
@@ -75,7 +82,7 @@ const columns = [
   {
     title: "School",
     render: (rowData) => {
-      let schoolName = "unknown";
+      let schoolName = "Unknown";
 
       cityConfig.forEach((location) => {
         if (location.students.includes(rowData.user.login)) {
@@ -105,7 +112,7 @@ const columns = [
     render: (rowData) => {
       return (
         <a
-          className="btn btn-outline-primary"
+          className="btn btn-outline-primary btn-sm"
           href={"https://www.gitpod.io/#" + rowData.html_url}
           role="button"
           target="_blank"
@@ -120,7 +127,7 @@ const columns = [
     render: (rowData) => {
       return (
         <a
-          className="btn btn-outline-secondary"
+          className="btn btn-outline-secondary btn-sm"
           href={rowData.html_url}
           role="button"
           target="_blank"

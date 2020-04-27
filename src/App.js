@@ -16,8 +16,6 @@ class App extends React.Component {
       showOnboarding: !cookie.load("onboardingHidden"),
     };
 
-    console.log(cookie.load("onboardingHidden"));
-
     this.handleClickOpen = this.handleClickOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.githubRepo = this.props.githubRepo;
@@ -30,6 +28,13 @@ class App extends React.Component {
     this.setState({
       isLoading: true,
     });
+
+    let defaultSchool = cookie.load("chosenSchool");
+    if (defaultSchool != null) {
+      this.setState({
+        school: this.getSchoolFromName(defaultSchool),
+      });
+    }
 
     this.authRepo.registerOnAuthListener(
       (user) => {
@@ -70,6 +75,7 @@ class App extends React.Component {
   };
 
   setSchool(schoolName) {
+    cookie.save("chosenSchool", schoolName, { path: "/" });
     this.setState({ school: this.getSchoolFromName(schoolName) });
   }
 
@@ -81,13 +87,22 @@ class App extends React.Component {
 
   getDataForSchool(school) {
     return this.state.data.filter((homework) => {
-      return school.students.includes(homework.user.login);
+      if (school.name === "All") {
+        return true;
+      } else {
+        return school.students.includes(homework.user.login);
+      }
     });
   }
 
   hideOnboarding() {
     cookie.save("onboardingHidden", true, { path: "/" });
     this.setState({ showOnboarding: false });
+  }
+
+  showOnboarding() {
+    cookie.save("onboardingHidden", false, { path: "/" });
+    this.setState({ showOnboarding: true });
   }
 
   render() {
@@ -126,16 +141,16 @@ class App extends React.Component {
         </nav>
         {this.state.showOnboarding ? (
           <div className="container">
-            <div class="card border-0 shadow my-5">
-              <div class="card-body p-5">
-                <h1 class="font-weight-light">First Time Here?</h1>
-                <p class="lead">
+            <div className="card border-0 shadow my-5">
+              <div className="card-body p-5">
+                <h1 className="font-weight-light">First Time Here?</h1>
+                <p className="lead">
                   Thank you for helping mark our students homework. Homework
                   feedback provides the backbone of our tracking of our students
                   progress and is vital in order to encourage growth and build
                   confidence in our students.
                 </p>
-                <h3 class="font-weight-light">1. Read the guide</h3>
+                <h3 className="font-weight-light">1. Read the guide</h3>
                 <p>
                   The guide gives high level information and what we're trying
                   to achieve with the feedback that we give and the steps
@@ -148,14 +163,14 @@ class App extends React.Component {
                     here
                   </a>
                 </p>
-                <h3 class="font-weight-light">2. Choose your city</h3>
+                <h3 className="font-weight-light">2. Choose your city</h3>
                 <p>
                   In the card below you can choose the city that you belong to.
                   You are - of course - welcome to mark the homework of our any
                   of our students but we suggest sticking to a single school to
                   start off with.
                 </p>
-                <h3 class="font-weight-light">3. Give feedback</h3>
+                <h3 className="font-weight-light">3. Give feedback</h3>
                 <p>On each of row of the table below you can find</p>
                 <ul>
                   <li>Information about the homework</li>
@@ -175,17 +190,17 @@ class App extends React.Component {
                   </a>{" "}
                   for more information.
                 </p>
-                <h3 class="font-weight-light">4. Give a grade</h3>
+                <h3 className="font-weight-light">4. Give a grade</h3>
                 <p>
                   It is very important that when you finish giving feedback on a
                   students homework that you record the results in the tracking
                   spreadsheet. These are city specific and you can find the link
                   to your cities in the card below.
                 </p>
-                <h3 class="font-weight-light">Questions</h3>
+                <h3 className="font-weight-light">Questions</h3>
                 <p>Speak to your Class Coordinator or Chris Owen.</p>
                 <button
-                  class="btn btn-primary"
+                  className="btn btn-primary"
                   onClick={() => this.hideOnboarding()}
                 >
                   Hide this message
@@ -195,15 +210,17 @@ class App extends React.Component {
           </div>
         ) : null}
         <div className="container">
-          <div class="card border-0 shadow my-5">
-            <div class="card-body p-5">
-              <h1 class="font-weight-light">Welcome to the Homework Tracker</h1>
-              <p class="lead">Select your school:</p>
+          <div className="card border-0 shadow my-5">
+            <div className="card-body p-5">
+              <h1 className="font-weight-light">
+                Welcome to the Homework Tracker
+              </h1>
+              <p className="lead">Select your school:</p>
               <div>
                 {cityConfig.map((city) => {
                   return (
                     <button
-                      class={
+                      className={
                         this.state.school.name === city.name
                           ? "btn btn-primary"
                           : "btn btn-outline-primary"
@@ -215,15 +232,27 @@ class App extends React.Component {
                   );
                 })}
               </div>
+              <br />
+              <p className="lead">Need some tips?</p>
+              <div>
+                <button
+                  className="btn btn-outline-primary"
+                  onClick={() => this.showOnboarding()}
+                >
+                  Show Onboarding
+                </button>
+              </div>
             </div>
           </div>
         </div>
         {this.state.school === "None" ? null : (
           <div>
             <div className="container">
-              <div class="card border-0 shadow my-5">
-                <div class="card-body p-5">
-                  <h1 class="font-weight-light">Remember to give a grade</h1>
+              <div className="card border-0 shadow my-5">
+                <div className="card-body p-5">
+                  <h1 className="font-weight-light">
+                    Remember to give a grade
+                  </h1>
                   <p>
                     It's important that you give a grade on the students
                     homework so that we can track their development and growth
@@ -245,7 +274,7 @@ class App extends React.Component {
 
                   <div>
                     <a
-                      class="btn btn-primary"
+                      className="btn btn-primary"
                       href={this.state.school.tracker}
                       target="_blank"
                       rel="noopener noreferrer"

@@ -54,7 +54,7 @@ export default [
       "kiyaGu",
       "mhallaq",
       "supertata",
-      "elsahib",
+      "elsahib20",
       "NawalC",
       "cobrac2001",
       "FatimaAbdimalik",
@@ -131,5 +131,10 @@ export default [
       "Tedros-Ghebrekirstos",
       "zubedauk",
     ],
+  },
+  {
+    name: "All",
+    tracker: "",
+    students: [],
   },
 ];

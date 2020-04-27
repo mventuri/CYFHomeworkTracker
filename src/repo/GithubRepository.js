@@ -62,9 +62,13 @@ class GithubRepository {
 
   getAllHomeworkToReviewForSchool(repoNamesArray, school) {
     return this.getAllHomeworkToReview(repoNamesArray).then((data) => {
-      return data.filter((homework) => {
-        return school.students.contains(homework.user.login);
-      });
+      if (school === "Unknown") {
+        return data;
+      } else {
+        return data.filter((homework) => {
+          return school.students.contains(homework.user.login);
+        });
+      }
     });
   }
 
