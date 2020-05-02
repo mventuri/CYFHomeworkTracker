@@ -5,6 +5,8 @@ import homeworkRepos from "./config/HomeworkRepositories.js";
 import cityConfig from "./config/CityConfig.js";
 import { withRouter } from "react-router-dom";
 import cookie from "react-cookies";
+import StudentModal from "./components/StudentModal";
+import Onboarding from "./components/Onboarding";
 
 class App extends React.Component {
   constructor(props) {
@@ -14,12 +16,13 @@ class App extends React.Component {
       data: [],
       school: "None",
       showOnboarding: !cookie.load("onboardingHidden"),
+      showModal: false,
+      student: {},
     };
 
-    this.handleClickOpen = this.handleClickOpen.bind(this);
-    this.handleClose = this.handleClose.bind(this);
     this.githubRepo = this.props.githubRepo;
     this.authRepo = this.props.authRepo;
+    this.reviewRepo = this.props.reviewRepo;
   }
 
   componentDidMount() {
@@ -66,14 +69,6 @@ class App extends React.Component {
     });
   }
 
-  handleClickOpen = () => {
-    this.setState({ dialogOpen: true });
-  };
-
-  handleClose = () => {
-    this.setState({ dialogOpen: false });
-  };
-
   setSchool(schoolName) {
     cookie.save("chosenSchool", schoolName, { path: "/" });
     this.setState({ school: this.getSchoolFromName(schoolName) });
@@ -103,6 +98,26 @@ class App extends React.Component {
   showOnboarding() {
     cookie.save("onboardingHidden", false, { path: "/" });
     this.setState({ showOnboarding: true });
+  }
+
+  onStudentClicked(studentName) {
+    this.setState({
+      showModal: true,
+    });
+
+    this.githubRepo.getStudent(studentName).then((student) => {
+      console.log(student.data);
+      this.setState({
+        student: student.data,
+      });
+    });
+  }
+
+  onViewPullRequestClick(id) {
+    console.log(id);
+    console.log(this.reviewRepo);
+
+    this.reviewRepo.reportRepoInReview(id, "Chris");
   }
 
   render() {
@@ -139,75 +154,22 @@ class App extends React.Component {
             </div>
           </div>
         </nav>
+        <StudentModal
+          student={this.state.student}
+          githubRepo={this.githubRepo}
+          showModal={this.state.showModal}
+          closeModal={() => {
+            this.setState({
+              showModal: false,
+            });
+          }}
+        />
         {this.state.showOnboarding ? (
-          <div className="container">
-            <div className="card border-0 shadow my-5">
-              <div className="card-body p-5">
-                <h1 className="font-weight-light">First Time Here?</h1>
-                <p className="lead">
-                  Thank you for helping mark our students homework. Homework
-                  feedback provides the backbone of our tracking of our students
-                  progress and is vital in order to encourage growth and build
-                  confidence in our students.
-                </p>
-                <h3 className="font-weight-light">1. Read the guide</h3>
-                <p>
-                  The guide gives high level information and what we're trying
-                  to achieve with the feedback that we give and the steps
-                  required to fully mark the homework. You can read the full
-                  guide{" "}
-                  <a
-                    href="https://docs.codeyourfuture.io/volunteers/education/homework-feedback"
-                    target="_blank"
-                  >
-                    here
-                  </a>
-                </p>
-                <h3 className="font-weight-light">2. Choose your city</h3>
-                <p>
-                  In the card below you can choose the city that you belong to.
-                  You are - of course - welcome to mark the homework of our any
-                  of our students but we suggest sticking to a single school to
-                  start off with.
-                </p>
-                <h3 className="font-weight-light">3. Give feedback</h3>
-                <p>On each of row of the table below you can find</p>
-                <ul>
-                  <li>Information about the homework</li>
-                  <li>A link to view the source code in an online editor</li>
-                  <li>A link to the students pull request</li>
-                </ul>
-                <p>
-                  Peer review style feedback should be given to the student on
-                  their pull requests. Please read the guide above for full
-                  guidelines. You should make sure to tag the homework correctly
-                  when you have reviewed it. See{" "}
-                  <a
-                    href="https://docs.codeyourfuture.io/volunteers/education/homework-feedback#labelling-the-pull-request"
-                    target="_blank"
-                  >
-                    here
-                  </a>{" "}
-                  for more information.
-                </p>
-                <h3 className="font-weight-light">4. Give a grade</h3>
-                <p>
-                  It is very important that when you finish giving feedback on a
-                  students homework that you record the results in the tracking
-                  spreadsheet. These are city specific and you can find the link
-                  to your cities in the card below.
-                </p>
-                <h3 className="font-weight-light">Questions</h3>
-                <p>Speak to your Class Coordinator or Chris Owen.</p>
-                <button
-                  className="btn btn-primary"
-                  onClick={() => this.hideOnboarding()}
-                >
-                  Hide this message
-                </button>
-              </div>
-            </div>
-          </div>
+          <Onboarding
+            hideOnboarding={() => {
+              this.hideOnboarding();
+            }}
+          />
         ) : null}
         <div className="container">
           <div className="card border-0 shadow my-5">
@@ -247,6 +209,25 @@ class App extends React.Component {
         </div>
         {this.state.school === "None" ? null : (
           <div>
+            <div className="container">
+              <div className="card border-0 shadow my-5">
+                <div className="card-body p-5">
+                  <h1 className="font-weight-light">Students</h1>
+                  {this.state.school.students.map((studentName) => {
+                    return (
+                      <button
+                        className="btn btn-outline-secondary btn-sm m-1"
+                        onClick={() => {
+                          this.onStudentClicked(studentName);
+                        }}
+                      >
+                        {studentName}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
             <div className="container">
               <div className="card border-0 shadow my-5">
                 <div className="card-body p-5">
@@ -291,6 +272,9 @@ class App extends React.Component {
                   <HomeworkTable
                     isLoading={this.state.isLoading}
                     data={this.getDataForSchool(this.state.school)}
+                    onClick={(id) => {
+                      this.onViewPullRequestClick(id);
+                    }}
                   />
                 </div>
               </div>

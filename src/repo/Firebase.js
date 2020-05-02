@@ -12,7 +12,7 @@ class Firebase {
     /* Firebase APIs */
     this.auth = app.auth();
     this.db = app.firestore();
-    this.db.enablePersistence().catch(function(err) {
+    this.db.enablePersistence().catch(function (err) {
       console.log(err.toString());
     });
     /* Social Sign In Method Provider */
@@ -34,15 +34,16 @@ class Firebase {
   doSignInWithGithub = () => this.auth.signInWithPopup(this.githubProvider);
   doSignInAnonymous = () => this.auth.signInAnonymously();
   doSignOut = () => this.auth.signOut();
-  doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
+  doPasswordReset = (email) => this.auth.sendPasswordResetEmail(email);
   doSendEmailVerification = () =>
     this.auth.currentUser.sendEmailVerification({
-      url: process.env.REACT_APP_CONFIRMATION_EMAIL_REDIRECT
+      url: process.env.REACT_APP_CONFIRMATION_EMAIL_REDIRECT,
     });
-  doPasswordUpdate = password => this.auth.currentUser.updatePassword(password);
+  doPasswordUpdate = (password) =>
+    this.auth.currentUser.updatePassword(password);
   // *** Merge Auth and DB User API *** //
   onAuthUserListener = (next, fallback) =>
-    this.auth.onAuthStateChanged(authUser => {
+    this.auth.onAuthStateChanged((authUser) => {
       if (authUser) {
         next(authUser);
       } else {
@@ -51,6 +52,7 @@ class Firebase {
     });
   // *** User API ***
   users = () => this.db.collection("users");
+  inUseData = () => this.db.collection("inUseData");
 }
 
 export default Firebase;

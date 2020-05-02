@@ -42,152 +42,165 @@ const tableIcons = {
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
 };
 
-const columns = [
-  {
-    defaultSortOrder: "asc",
-    render: (rowData, t) => {
-      let reviewed = rowData.labels.some((label) => label.name === "reviewed");
-      let assignee = rowData.assignees[0];
-
-      if (reviewed) {
-        return (
-          <button type="button" className="btn btn-success">
-            Reviewed
-          </button>
-        );
-      } else if (assignee != null) {
-        return (
-          <button type="button" className="btn btn-warning btn-sm">
-            In Review <br />
-            by {assignee.login}
-          </button>
-        );
-      } else {
-        return (
-          <button type="button" className="btn btn-success btn-sm">
-            To Review
-          </button>
-        );
-      }
-    },
-  },
-  { title: "Title", field: "title" },
-  {
-    title: "Student",
-    field: "user.login",
-    render: (rowData) => {
-      return <a href={rowData.user.html_url}>{rowData.user.login}</a>;
-    },
-  },
-  {
-    title: "School",
-    render: (rowData) => {
-      let schoolName = "Unknown";
-
-      cityConfig.forEach((location) => {
-        if (location.students.includes(rowData.user.login)) {
-          schoolName = location.name;
-        }
-      });
-
-      return schoolName.toString();
-    },
-  },
-  {
-    title: "Submitted",
-    field: "created_at",
-    defaultSort: "asc",
-    render: (rowData) => {
-      return dateToString(new Date(rowData.created_at));
-    },
-  },
-  {
-    title: "Homework Module",
-    field: "base.repo.name",
-    render: (rowData) => {
-      return <a href={rowData.base.repo.html_url}>{rowData.base.repo.name}</a>;
-    },
-  },
-  {
-    render: (rowData) => {
-      return (
-        <a
-          className="btn btn-outline-primary btn-sm"
-          href={"https://www.gitpod.io/#" + rowData.html_url}
-          role="button"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          View Source
-        </a>
-      );
-    },
-  },
-  {
-    render: (rowData) => {
-      return (
-        <a
-          className="btn btn-outline-secondary btn-sm"
-          href={rowData.html_url}
-          role="button"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          View Pull Request
-        </a>
-      );
-    },
-  },
-];
-
-const options = {
-  pageSize: 20,
-  defaultExpanded: true,
-};
-
-function dateToString(a) {
-  var months = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
-  var year = a.getFullYear();
-  var month = months[a.getMonth()];
-  var date = a.getDate();
-  var hour = a.getHours();
-  var min = a.getMinutes();
-  return (
-    date +
-    " " +
-    month +
-    " " +
-    year +
-    " " +
-    formatTime(hour) +
-    ":" +
-    formatTime(min)
-  );
-}
-
-function formatTime(num) {
-  return ("0" + num).slice(-2);
-}
-
 class HomeworkTable extends React.Component {
+  columns = [
+    {
+      defaultSortOrder: "asc",
+      render: (rowData, t) => {
+        let reviewed = rowData.labels.some(
+          (label) => label.name === "reviewed"
+        );
+        let assignee = rowData.assignees[0];
+
+        if (reviewed) {
+          return (
+            <button type="button" className="btn btn-success">
+              Reviewed
+            </button>
+          );
+        } else if (assignee != null) {
+          return (
+            <button type="button" className="btn btn-warning btn-sm">
+              In Review <br />
+              by {assignee.login}
+            </button>
+          );
+        } else {
+          return (
+            <button type="button" className="btn btn-success btn-sm">
+              To Review
+            </button>
+          );
+        }
+      },
+    },
+    { title: "Title", field: "title" },
+    {
+      title: "Student",
+      field: "user.login",
+      render: (rowData) => {
+        return <a href={rowData.user.html_url}>{rowData.user.login}</a>;
+      },
+    },
+    {
+      title: "School",
+      render: (rowData) => {
+        let schoolName = "Unknown";
+
+        cityConfig.forEach((location) => {
+          if (location.students.includes(rowData.user.login)) {
+            schoolName = location.name;
+          }
+        });
+
+        return schoolName.toString();
+      },
+    },
+    {
+      title: "Submitted",
+      field: "created_at",
+      defaultSort: "asc",
+      render: (rowData) => {
+        return this.dateToString(new Date(rowData.created_at));
+      },
+    },
+    {
+      title: "Homework Module",
+      field: "base.repo.name",
+      render: (rowData) => {
+        return (
+          <a href={rowData.base.repo.html_url}>{rowData.base.repo.name}</a>
+        );
+      },
+    },
+    {
+      render: (rowData) => {
+        return (
+          <a
+            className="btn btn-outline-primary btn-sm"
+            href={"https://www.gitpod.io/#" + rowData.html_url}
+            role="button"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View Source
+          </a>
+        );
+      },
+    },
+    {
+      render: (rowData) => {
+        return (
+          <a
+            className="btn btn-outline-secondary btn-sm"
+            href={rowData.html_url}
+            role="button"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => {
+              this.onViewPullRequestClicked(rowData.html_url, rowData.id);
+            }}
+          >
+            View Pull Request
+          </a>
+        );
+      },
+    },
+  ];
+
+  options = {
+    pageSize: 20,
+    defaultExpanded: true,
+  };
+
+  dateToString(a) {
+    var months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+    var year = a.getFullYear();
+    var month = months[a.getMonth()];
+    var date = a.getDate();
+    var hour = a.getHours();
+    var min = a.getMinutes();
+    return (
+      date +
+      " " +
+      month +
+      " " +
+      year +
+      " " +
+      this.formatTime(hour) +
+      ":" +
+      this.formatTime(min)
+    );
+  }
+
+  formatTime(num) {
+    return ("0" + num).slice(-2);
+  }
+
+  onViewPullRequestClicked(url, pullRequestId) {
+    var win = window.open(url, "_blank");
+    win.focus();
+    this.props.onClick(pullRequestId);
+  }
+
   constructor(props) {
     super(props);
     this.state = {
-      columns: columns,
-      options: options,
+      columns: this.columns,
+      options: this.options,
     };
   }
 

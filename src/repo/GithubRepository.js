@@ -25,6 +25,12 @@ class GithubRepository {
     });
   }
 
+  getStudent(studentName) {
+    return this.octokit.users.getByUsername({
+      username: studentName,
+    });
+  }
+
   getAllHomework(repoName) {
     return this.octokit.pulls
       .list({
