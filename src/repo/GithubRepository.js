@@ -65,7 +65,13 @@ class GithubRepository {
       return this.getHomeworkToReview(repoName, 2);
     });
 
+    let promisesPageThree = repoNamesArray.map((repoName) => {
+      return this.getHomeworkToReview(repoName, 3);
+    });
+
     promises = promises.concat(promisesPageTwo);
+
+    promises = promises.concat(promisesPageThree);
 
     return Promise.all(promises).then((data) => {
       console.log(data);
