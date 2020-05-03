@@ -74,6 +74,21 @@ class HomeworkTable extends React.Component {
         }
       },
     },
+    {
+      render: (rowData, t) => {
+        let graded = rowData.labels.some((label) => label.name === "graded");
+
+        if (graded) {
+          return (
+            <button type="button" className="btn btn-success">
+              Graded
+            </button>
+          );
+        } else {
+          return <div></div>;
+        }
+      },
+    },
     { title: "Title", field: "title" },
     {
       title: "Student",

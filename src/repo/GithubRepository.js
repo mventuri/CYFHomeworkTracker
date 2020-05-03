@@ -31,20 +31,21 @@ class GithubRepository {
     });
   }
 
-  getAllHomework(repoName) {
+  getAllHomework(repoName, pageNo) {
     return this.octokit.pulls
       .list({
         owner: "CodeYourFuture",
         repo: repoName,
         per_page: 100,
+        page: pageNo,
       })
       .catch((err) => {
         console.log(err);
       });
   }
 
-  getHomeworkToReview(repoName) {
-    return this.getAllHomework(repoName)
+  getHomeworkToReview(repoName, pageNo) {
+    return this.getAllHomework(repoName, pageNo)
       .then(({ data }) => {
         return data.filter((pull) => {
           return this.isNotReviewed(pull);
@@ -57,8 +58,14 @@ class GithubRepository {
 
   getAllHomeworkToReview(repoNamesArray) {
     let promises = repoNamesArray.map((repoName) => {
-      return this.getHomeworkToReview(repoName);
+      return this.getHomeworkToReview(repoName, 1);
     });
+
+    let promisesPageTwo = repoNamesArray.map((repoName) => {
+      return this.getHomeworkToReview(repoName, 2);
+    });
+
+    promises = promises.concat(promisesPageTwo);
 
     return Promise.all(promises).then((data) => {
       console.log(data);
