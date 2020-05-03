@@ -5,6 +5,39 @@ import ProjectTable from "./ProjectTable";
 import ProjectSpecs from "../config/ProjectSpecs";
 
 class StudentModal extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: ProjectSpecs,
+    };
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.student.name === undefined) {
+      return;
+    }
+
+    if (prevProps.student.login === this.props.student.login) {
+      return;
+    }
+
+    this.state.data.forEach((project, index) => {
+      fetch(
+        `https://cyf-${this.props.student.login}-${project.shortName}.netlify.com`
+      )
+        .then((data) => {
+          console.log(data);
+          project.success = data.status === 200;
+          let projects = this.state.data;
+          projects[index] = project;
+          this.setState({ data: projects });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    });
+  }
+
   getProjectDetails() {
     return ProjectSpecs.map((project) => {
       return project;
@@ -16,8 +49,6 @@ class StudentModal extends React.Component {
       this.props.student.name === null
         ? this.props.student.login
         : this.props.student.name;
-
-    console.log(name);
 
     if (name === undefined) {
       return "Loading...";

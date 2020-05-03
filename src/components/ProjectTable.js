@@ -45,6 +45,7 @@ const tableIcons = {
 class ProjectTable extends React.Component {
   columns = [
     { title: "Project Name", field: "longName" },
+    { title: "Success", field: "success" },
     {
       render: (rowData) => {
         return (

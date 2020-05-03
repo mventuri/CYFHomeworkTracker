@@ -164,13 +164,6 @@ class App extends React.Component {
             });
           }}
         />
-        {this.state.showOnboarding ? (
-          <Onboarding
-            hideOnboarding={() => {
-              this.hideOnboarding();
-            }}
-          />
-        ) : null}
         <div className="container">
           <div className="card border-0 shadow my-5">
             <div className="card-body p-5">
@@ -228,44 +221,13 @@ class App extends React.Component {
                 </div>
               </div>
             </div>
-            <div className="container">
-              <div className="card border-0 shadow my-5">
-                <div className="card-body p-5">
-                  <h1 className="font-weight-light">
-                    Remember to give a grade
-                  </h1>
-                  <p>
-                    It's important that you give a grade on the students
-                    homework so that we can track their development and growth
-                    over the course.
-                  </p>
-
-                  <p>
-                    You can find a guide on how grade homework{" "}
-                    <a
-                      href="https://docs.codeyourfuture.io/volunteers/education/homework-feedback#2-homework-grading"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      here
-                    </a>
-                  </p>
-
-                  <p>Give feedback here:</p>
-
-                  <div>
-                    <a
-                      className="btn btn-primary"
-                      href={this.state.school.tracker}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Give Feedback
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <Onboarding
+              hideOnboarding={() => {
+                this.hideOnboarding();
+              }}
+              school={this.state.school}
+              fullOnboarding={this.state.showOnboarding}
+            />
             <div className="container">
               <div className="card border-0 shadow my-5">
                 <div>
