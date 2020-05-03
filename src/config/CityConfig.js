@@ -2,7 +2,7 @@ export default [
   {
     name: "London",
     tracker:
-      "https://docs.google.com/spreadsheets/d/1B_08AtHWy8FwGnfjTmj5TzuNKtBf2ov31BFPnJs2DR0/edit#gid=0",
+      "https://docs.google.com/spreadsheets/d/1B_08AtHWy8FwGnfjTmj5TzuNKtBf2ov31BFPnJs2DR0/edit#gid=1726249445",
     students: [
       "ferhatu",
       "Hamidreza-Fakharzadeh",
