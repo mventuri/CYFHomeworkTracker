@@ -3,6 +3,7 @@ import { withRouter } from "react-router-dom";
 import Modal from "react-modal";
 import ProjectTable from "./ProjectTable";
 import ProjectSpecs from "../config/ProjectSpecs";
+import HomeworkTable from "../components/HomeworkTable";
 
 class StudentModal extends React.Component {
   constructor(props) {
@@ -98,10 +99,23 @@ class StudentModal extends React.Component {
             <h1>{this.getStudentName()}</h1>
           </div>
         </div>
-        <ProjectTable
-          data={this.getProjectDetails()}
-          studentName={this.props.student.login}
-        />
+        <div class="container">
+          <h2 className="font-weight-light">Open Pull Requests</h2>
+          <HomeworkTable
+            onClick={(id) => {
+              this.onViewPullRequestClick(id);
+            }}
+            size={5}
+            search={false}
+          />
+        </div>
+        <div class="container">
+          <h2 className="font-weight-light">Projects</h2>
+          <ProjectTable
+            data={this.getProjectDetails()}
+            studentName={this.props.student.login}
+          />
+        </div>
       </Modal>
     );
   }

@@ -137,6 +137,9 @@ class HomeworkTable extends React.Component {
             role="button"
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => {
+              this.onViewPullRequestClicked(rowData.id);
+            }}
           >
             View Source
           </a>
@@ -153,7 +156,7 @@ class HomeworkTable extends React.Component {
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => {
-              this.onViewPullRequestClicked(rowData.html_url, rowData.id);
+              this.onViewPullRequestClicked(rowData.id);
             }}
           >
             View Pull Request
@@ -164,8 +167,12 @@ class HomeworkTable extends React.Component {
   ];
 
   options = {
-    pageSize: 20,
+    search: this.props.search || true,
+    pageSize: this.props.size || 20,
     defaultExpanded: true,
+    headerStyle: {
+      zIndex: 1,
+    },
   };
 
   dateToString(a) {
@@ -205,9 +212,7 @@ class HomeworkTable extends React.Component {
     return ("0" + num).slice(-2);
   }
 
-  onViewPullRequestClicked(url, pullRequestId) {
-    var win = window.open(url, "_blank");
-    win.focus();
+  onViewPullRequestClicked(pullRequestId) {
     this.props.onClick(pullRequestId);
   }
 

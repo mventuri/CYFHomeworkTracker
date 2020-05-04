@@ -1,10 +1,17 @@
 import React, { forwardRef } from "react";
 import { withRouter } from "react-router-dom";
+import Modal from "react-modal";
 
-class Onboarding extends React.Component {
+class OnboardingModal extends React.Component {
   render() {
-    if (this.props.fullOnboarding) {
-      return (
+    return (
+      <Modal
+        isOpen={this.props.showModal}
+        onRequestClose={() => {
+          this.props.closeModal();
+        }}
+        contentLabel="Example Modal"
+      >
         <div className="container">
           <div className="card border-0 shadow my-5">
             <div className="card-body p-5">
@@ -15,11 +22,15 @@ class Onboarding extends React.Component {
                 progress and is vital in order to encourage growth and build
                 confidence in our students.
               </p>
+              <br />
               <h3 className="font-weight-light">1. Read the guide</h3>
               <p>
                 The guide gives high level information and what we're trying to
                 achieve with the feedback that we give and the steps required to
-                fully mark the homework. You can read the full guide{" "}
+                fully mark the homework.
+              </p>
+              <p>
+                You can read the full guide{" "}
                 <a
                   href="https://docs.codeyourfuture.io/volunteers/education/homework-feedback"
                   target="_blank"
@@ -27,13 +38,15 @@ class Onboarding extends React.Component {
                   here
                 </a>
               </p>
+              <br />
               <h3 className="font-weight-light">2. Choose your city</h3>
               <p>
-                In the card below you can choose the city that you belong to.
-                You are - of course - welcome to mark the homework of our any of
-                our students but we suggest sticking to a single school to start
-                off with.
+                In the previous screen you can select the school that you
+                volunteer with. You are - of course - welcome to mark the
+                homework of our any of our students but we suggest sticking to a
+                single school to start off with.
               </p>
+              <br />
               <h3 className="font-weight-light">3. Give feedback</h3>
               <p>On each of row of the table below you can find</p>
               <ul>
@@ -45,7 +58,10 @@ class Onboarding extends React.Component {
                 Peer review style feedback should be given to the student on
                 their pull requests. Please read the guide above for full
                 guidelines. You should make sure to tag the homework correctly
-                when you have reviewed it. See{" "}
+                when you have reviewed it.
+              </p>
+              <p>
+                See{" "}
                 <a
                   href="https://docs.codeyourfuture.io/volunteers/education/homework-feedback#labelling-the-pull-request"
                   target="_blank"
@@ -54,18 +70,7 @@ class Onboarding extends React.Component {
                 </a>{" "}
                 for more information.
               </p>
-              <p>Give feedback here:</p>
-              <div>
-                <a
-                  className="btn btn-primary"
-                  href={this.props.school.tracker}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Give Feedback
-                </a>
-              </div>
-
+              <br />
               <h3 className="font-weight-light">4. Give a grade</h3>
               <p>
                 It is very important that when you finish giving feedback on a
@@ -73,42 +78,7 @@ class Onboarding extends React.Component {
                 spreadsheet. These are city specific and you can find the link
                 to your cities in the card below.
               </p>
-              <h3 className="font-weight-light">Questions</h3>
-              <p>Speak to your Class Coordinator or Chris Owen.</p>
-              <button
-                className="btn btn-primary"
-                onClick={() => this.props.hideOnboarding()}
-              >
-                Hide this message
-              </button>
-            </div>
-          </div>
-        </div>
-      );
-    } else {
-      return (
-        <div className="container">
-          <div className="card border-0 shadow my-5">
-            <div className="card-body p-5">
-              <h1 className="font-weight-light">Remember to give a grade</h1>
-              <p>
-                It's important that you give a grade on the students homework so
-                that we can track their development and growth over the course.
-              </p>
-
-              <p>
-                You can find a guide on how grade homework{" "}
-                <a
-                  href="https://docs.codeyourfuture.io/volunteers/education/homework-feedback#2-homework-grading"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  here
-                </a>
-              </p>
-
-              <p>Give feedback here:</p>
-
+              <p>Record the grade here</p>
               <div>
                 <a
                   className="btn btn-primary"
@@ -116,15 +86,24 @@ class Onboarding extends React.Component {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Give Feedback
+                  Record grade
                 </a>
               </div>
+              <br />
+              <h3 className="font-weight-light">Questions</h3>
+              <p>Speak to your Class Coordinator or Chris Owen.</p>
+              <button
+                className="btn btn-danger"
+                onClick={() => this.props.hideOnboarding()}
+              >
+                Close
+              </button>
             </div>
           </div>
         </div>
-      );
-    }
+      </Modal>
+    );
   }
 }
 
-export default withRouter(Onboarding);
+export default withRouter(OnboardingModal);

@@ -6,7 +6,7 @@ import cityConfig from "./config/CityConfig.js";
 import { withRouter } from "react-router-dom";
 import cookie from "react-cookies";
 import StudentModal from "./components/StudentModal";
-import Onboarding from "./components/Onboarding";
+import OnboardingModal from "./components/OnboardingModal";
 
 class App extends React.Component {
   constructor(props) {
@@ -15,7 +15,7 @@ class App extends React.Component {
       isLoading: false,
       data: [],
       school: "None",
-      showOnboarding: !cookie.load("onboardingHidden"),
+      showOnboarding: false,
       showModal: false,
       student: {},
     };
@@ -39,6 +39,8 @@ class App extends React.Component {
       });
     }
 
+    this.setSchoolFromParams();
+
     this.authRepo.registerOnAuthListener(
       (user) => {
         console.log("user");
@@ -58,6 +60,25 @@ class App extends React.Component {
         console.log(error);
       }
     );
+
+    window.addEventListener("blur", this.onFocus);
+  }
+  componentWilUnmount() {
+    window.removeEventListener("blur", this.onFocus);
+  }
+
+  onFocus = () => {
+    console.log("onResume");
+  };
+
+  setSchoolFromParams() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const school = urlParams.get("school");
+    if (school !== null) {
+      this.setState({
+        school: this.getSchoolFromName(school),
+      });
+    }
   }
 
   loadHomeworkRepos() {
@@ -76,7 +97,7 @@ class App extends React.Component {
 
   getSchoolFromName(schoolName) {
     return cityConfig.filter((city) => {
-      return city.name === schoolName;
+      return city.name.toLowerCase() === schoolName.toLowerCase();
     })[0];
   }
 
@@ -91,12 +112,12 @@ class App extends React.Component {
   }
 
   hideOnboarding() {
-    cookie.save("onboardingHidden", true, { path: "/" });
+    cookie.save("onboardingShown", false, { path: "/" });
     this.setState({ showOnboarding: false });
   }
 
   showOnboarding() {
-    cookie.save("onboardingHidden", false, { path: "/" });
+    cookie.save("onboardingShown", true, { path: "/" });
     this.setState({ showOnboarding: true });
   }
 
@@ -114,8 +135,9 @@ class App extends React.Component {
   }
 
   onViewPullRequestClick(id) {
-    console.log(id);
-    console.log(this.reviewRepo);
+    if (cookie.load("onboardingShown") === false) {
+      this.showOnboarding();
+    }
 
     this.reviewRepo.reportRepoInReview(id, "Chris");
   }
@@ -221,26 +243,67 @@ class App extends React.Component {
                 </div>
               </div>
             </div>
-            <Onboarding
-              hideOnboarding={() => {
-                this.hideOnboarding();
-              }}
-              school={this.state.school}
-              fullOnboarding={this.state.showOnboarding}
-            />
             <div className="container">
               <div className="card border-0 shadow my-5">
-                <div>
-                  <HomeworkTable
-                    isLoading={this.state.isLoading}
-                    data={this.getDataForSchool(this.state.school)}
-                    onClick={(id) => {
-                      this.onViewPullRequestClick(id);
-                    }}
-                  />
+                <div className="card-body p-5">
+                  <h1 className="font-weight-light">
+                    Remember to give a grade
+                  </h1>
+                  <p>
+                    It's important that you give a grade on the students
+                    homework so that we can track their development and growth
+                    over the course.
+                  </p>
+
+                  <p>
+                    You can find a guide on how grade homework{" "}
+                    <a
+                      href="https://docs.codeyourfuture.io/volunteers/education/homework-feedback#2-homework-grading"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      here
+                    </a>
+                  </p>
+
+                  <p>Give feedback here:</p>
+
+                  <div>
+                    <a
+                      className="btn btn-primary"
+                      href={this.state.school.tracker}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Give Feedback
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
+            <div className="container">
+              <div className="card border-0 shadow my-5">
+                <HomeworkTable
+                  isLoading={this.state.isLoading}
+                  data={this.getDataForSchool(this.state.school)}
+                  onClick={(id) => {
+                    this.onViewPullRequestClick(id);
+                  }}
+                />
+              </div>
+            </div>
+            <OnboardingModal
+              hideOnboarding={() => {
+                this.hideOnboarding();
+              }}
+              showModal={this.state.showOnboarding}
+              school={this.state.school}
+              closeModal={() => {
+                this.setState({
+                  showOnboarding: false,
+                });
+              }}
+            />
           </div>
         )}
       </div>
