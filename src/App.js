@@ -48,6 +48,7 @@ class App extends React.Component {
         if (user) {
           this.githubRepo.setToken().then((u) => {
             this.loadHomeworkRepos();
+            this.setStudentFromParams();
           });
         } else {
           history.replace(process.env.PUBLIC_URL + "/login");
@@ -60,16 +61,7 @@ class App extends React.Component {
         console.log(error);
       }
     );
-
-    window.addEventListener("blur", this.onFocus);
   }
-  componentWilUnmount() {
-    window.removeEventListener("blur", this.onFocus);
-  }
-
-  onFocus = () => {
-    console.log("onResume");
-  };
 
   setSchoolFromParams() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -78,6 +70,14 @@ class App extends React.Component {
       this.setState({
         school: this.getSchoolFromName(school),
       });
+    }
+  }
+
+  setStudentFromParams() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const student = urlParams.get("student");
+    if (student !== null) {
+      this.onStudentClicked(student);
     }
   }
 
@@ -199,6 +199,7 @@ class App extends React.Component {
                 {cityConfig.map((city) => {
                   return (
                     <button
+                      key={city.name}
                       className={
                         this.state.school.name === city.name
                           ? "btn btn-primary"
@@ -233,6 +234,7 @@ class App extends React.Component {
                   {this.state.school.students.map((studentName) => {
                     return (
                       <button
+                        key={studentName}
                         className="btn btn-outline-secondary btn-sm m-1"
                         onClick={() => {
                           this.onStudentClicked(studentName);
@@ -287,6 +289,7 @@ class App extends React.Component {
               <HomeworkTable
                 isLoading={this.state.isLoading}
                 data={this.getDataForSchool(this.state.school)}
+                token={this.githubRepo.getToken()}
                 onClick={(id) => {
                   this.onViewPullRequestClick(id);
                 }}

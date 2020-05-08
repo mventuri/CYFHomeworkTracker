@@ -274,7 +274,9 @@ class HomeworkTable extends React.Component {
         isLoading={this.props.isLoading}
         options={this.state.options}
         detailPanel={(rowData) => {
-          return <RepoContentsComponent pull={rowData} />;
+          return (
+            <RepoContentsComponent pull={rowData} token={this.props.token} />
+          );
         }}
       />
     );

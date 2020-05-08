@@ -7,6 +7,7 @@ class GithubRepository {
 
   setToken() {
     return this.authRepo.getToken().then((token) => {
+      this.token = token;
       this.octokit = new Octokit({
         userAgent: "CyfHomeworkTracker",
         auth: token,
@@ -23,6 +24,10 @@ class GithubRepository {
         },
       });
     });
+  }
+
+  getToken() {
+    return this.token;
   }
 
   getStudent(studentName) {
