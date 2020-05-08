@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/CYFHomeworkTracker/static/css/main.93580429.chunk.css",
-    "main.js": "/CYFHomeworkTracker/static/js/main.877ec867.chunk.js",
-    "main.js.map": "/CYFHomeworkTracker/static/js/main.877ec867.chunk.js.map",
+    "main.js": "/CYFHomeworkTracker/static/js/main.032856b6.chunk.js",
+    "main.js.map": "/CYFHomeworkTracker/static/js/main.032856b6.chunk.js.map",
     "runtime-main.js": "/CYFHomeworkTracker/static/js/runtime-main.2b6c7119.js",
     "runtime-main.js.map": "/CYFHomeworkTracker/static/js/runtime-main.2b6c7119.js.map",
     "static/js/2.01bfacc8.chunk.js": "/CYFHomeworkTracker/static/js/2.01bfacc8.chunk.js",
     "static/js/2.01bfacc8.chunk.js.map": "/CYFHomeworkTracker/static/js/2.01bfacc8.chunk.js.map",
     "index.html": "/CYFHomeworkTracker/index.html",
-    "precache-manifest.ceab417385e90a886a1b6816e06f9cf5.js": "/CYFHomeworkTracker/precache-manifest.ceab417385e90a886a1b6816e06f9cf5.js",
+    "precache-manifest.065a432931828704329322353f75f224.js": "/CYFHomeworkTracker/precache-manifest.065a432931828704329322353f75f224.js",
     "service-worker.js": "/CYFHomeworkTracker/service-worker.js",
     "static/css/main.93580429.chunk.css.map": "/CYFHomeworkTracker/static/css/main.93580429.chunk.css.map",
     "static/js/2.01bfacc8.chunk.js.LICENSE.txt": "/CYFHomeworkTracker/static/js/2.01bfacc8.chunk.js.LICENSE.txt"
@@ -17,6 +17,6 @@
     "static/js/runtime-main.2b6c7119.js",
     "static/js/2.01bfacc8.chunk.js",
     "static/css/main.93580429.chunk.css",
-    "static/js/main.877ec867.chunk.js"
+    "static/js/main.032856b6.chunk.js"
   ]
 }
