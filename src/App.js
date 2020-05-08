@@ -179,7 +179,9 @@ class App extends React.Component {
         <StudentModal
           student={this.state.student}
           githubRepo={this.githubRepo}
+          school={this.state.school}
           showModal={this.state.showModal}
+          pullRequestData={this.state.data}
           closeModal={() => {
             this.setState({
               showModal: false,
@@ -281,16 +283,14 @@ class App extends React.Component {
                 </div>
               </div>
             </div>
-            <div className="container">
-              <div className="card border-0 shadow my-5">
-                <HomeworkTable
-                  isLoading={this.state.isLoading}
-                  data={this.getDataForSchool(this.state.school)}
-                  onClick={(id) => {
-                    this.onViewPullRequestClick(id);
-                  }}
-                />
-              </div>
+            <div className="container-fluid">
+              <HomeworkTable
+                isLoading={this.state.isLoading}
+                data={this.getDataForSchool(this.state.school)}
+                onClick={(id) => {
+                  this.onViewPullRequestClick(id);
+                }}
+              />
             </div>
             <OnboardingModal
               hideOnboarding={() => {

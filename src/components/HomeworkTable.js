@@ -1,5 +1,6 @@
 import React, { forwardRef } from "react";
 import MaterialTable from "material-table";
+import Popover from "react-tiny-popover";
 import { withRouter } from "react-router-dom";
 import AddBox from "@material-ui/icons/AddBox";
 import ArrowUpward from "@material-ui/icons/ArrowUpward";
@@ -17,6 +18,7 @@ import SaveAlt from "@material-ui/icons/SaveAlt";
 import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 import cityConfig from "../config/CityConfig.js";
+import RepoContentsComponent from "./RepoContentsComponent.js";
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -53,24 +55,16 @@ class HomeworkTable extends React.Component {
         let assignee = rowData.assignees[0];
 
         if (reviewed) {
-          return (
-            <button type="button" className="btn btn-success">
-              Reviewed
-            </button>
-          );
+          return <div className="btn btn-success btn-sm">Reviewed</div>;
         } else if (assignee != null) {
           return (
-            <button type="button" className="btn btn-warning btn-sm">
+            <div className="btn btn-warning btn-sm">
               In Review <br />
               by {assignee.login}
-            </button>
+            </div>
           );
         } else {
-          return (
-            <button type="button" className="btn btn-success btn-sm">
-              To Review
-            </button>
-          );
+          return <div className="btn btn-success btn-sm">To Review</div>;
         }
       },
     },
@@ -79,11 +73,7 @@ class HomeworkTable extends React.Component {
         let graded = rowData.labels.some((label) => label.name === "graded");
 
         if (graded) {
-          return (
-            <button type="button" className="btn btn-success">
-              Graded
-            </button>
-          );
+          return <div className="btn btn-success btn-sm">Graded</div>;
         } else {
           return <div></div>;
         }
@@ -149,6 +139,41 @@ class HomeworkTable extends React.Component {
     {
       render: (rowData) => {
         return (
+          <Popover
+            isOpen={this.state["isGitPopoverOpen" + rowData.number]}
+            position={"top"}
+            content={
+              <div className="card shadow my-1">
+                <div className="card-body p-2">
+                  <p>Copied to clipboard!</p>
+                  <p>Paste into a terminal to retrieve pull request.</p>
+                </div>
+              </div>
+            }
+            onClickOutside={() => {
+              let state = {};
+              state["isGitPopoverOpen" + rowData.number] = false;
+              this.setState(state);
+            }}
+          >
+            <div
+              className="btn btn-outline-primary btn-sm"
+              onClick={() => {
+                this.copyToClipboard(rowData.number);
+                let state = {};
+                state["isGitPopoverOpen" + rowData.number] = true;
+                this.setState(state);
+              }}
+            >
+              Copy Git Command
+            </div>
+          </Popover>
+        );
+      },
+    },
+    {
+      render: (rowData) => {
+        return (
           <a
             className="btn btn-outline-secondary btn-sm"
             href={rowData.html_url}
@@ -174,6 +199,19 @@ class HomeworkTable extends React.Component {
       zIndex: 1,
     },
   };
+
+  copyToClipboard(pullNumber) {
+    var dummy = document.createElement("textarea");
+    document.body.appendChild(dummy);
+    dummy.value = this.getGitCommand(pullNumber);
+    dummy.select();
+    document.execCommand("copy");
+    document.body.removeChild(dummy);
+  }
+
+  getGitCommand(pullNumber) {
+    return `git fetch origin "+pull/${pullNumber}/head:pull/${pullNumber}/head" && git checkout "refs/heads/pull/${pullNumber}/head"`;
+  }
 
   dateToString(a) {
     var months = [
@@ -235,6 +273,9 @@ class HomeworkTable extends React.Component {
         title=""
         isLoading={this.props.isLoading}
         options={this.state.options}
+        detailPanel={(rowData) => {
+          return <RepoContentsComponent pull={rowData} />;
+        }}
       />
     );
   }

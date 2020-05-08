@@ -3,6 +3,7 @@ import { withRouter } from "react-router-dom";
 import Modal from "react-modal";
 import ProjectTable from "./ProjectTable";
 import ProjectSpecs from "../config/ProjectSpecs";
+import CityConfig from "../config/CityConfig";
 import HomeworkTable from "../components/HomeworkTable";
 
 class StudentModal extends React.Component {
@@ -68,6 +69,28 @@ class StudentModal extends React.Component {
     this.props.closeModal();
   }
 
+  getSchoolFromUsername(username) {
+    if (username === undefined) {
+      return "Loading...";
+    }
+
+    let foundSchool;
+
+    CityConfig.forEach((school) => {
+      if (school.students.includes(username)) {
+        foundSchool = school;
+      }
+    });
+
+    return foundSchool;
+  }
+
+  getPullRequestsForStudent(username) {
+    return this.props.pullRequestData.filter((pull) => {
+      return pull.user.login === username;
+    });
+  }
+
   render() {
     const customStyles = {
       content: {
@@ -80,6 +103,8 @@ class StudentModal extends React.Component {
       },
     };
 
+    let school = this.getSchoolFromUsername(this.props.student.login);
+
     return (
       <Modal
         isOpen={this.props.showModal}
@@ -89,16 +114,33 @@ class StudentModal extends React.Component {
         contentLabel="Example Modal"
       >
         <div class="container">
-          <div class="row" style={{ margin: "auto" }}>
+          <div class="media">
             <img
+              class="align-self-start mr-3"
+              height="128"
+              width="128"
               src={this.props.student.avatar_url}
-              alt={this.getStudentName() + "'s Avatar Picture"}
-              height="100"
-              width="100"
+              alt={this.getStudentName() + "'s Avatar"}
             />
-            <h1>{this.getStudentName()}</h1>
+            <div class="media-body">
+              <h3 class="mt-0">{this.getStudentName()}</h3>
+              <p>
+                School: {school.name}
+                <br />
+                Student Tracker:{" "}
+                <a href={school.tracker} target="_blank">
+                  Link
+                </a>
+                <br />
+                Github Profile:{" "}
+                <a href={this.props.student.html_url} target="_blank">
+                  Link
+                </a>
+              </p>
+            </div>
           </div>
         </div>
+        <hr />
         <div class="container">
           <h2 className="font-weight-light">Open Pull Requests</h2>
           <HomeworkTable
@@ -107,8 +149,10 @@ class StudentModal extends React.Component {
             }}
             size={5}
             search={false}
+            data={this.getPullRequestsForStudent(this.props.student.login)}
           />
         </div>
+        <hr />
         <div class="container">
           <h2 className="font-weight-light">Projects</h2>
           <ProjectTable
