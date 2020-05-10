@@ -84,7 +84,16 @@ class HomeworkTable extends React.Component {
       title: "Student",
       field: "user.login",
       render: (rowData) => {
-        return <a href={rowData.user.html_url}>{rowData.user.login}</a>;
+        return (
+          <a
+            href="#"
+            onClick={() => {
+              this.props.onStudentClicked(rowData.user.login);
+            }}
+          >
+            {rowData.user.login}
+          </a>
+        );
       },
     },
     {
@@ -273,11 +282,20 @@ class HomeworkTable extends React.Component {
         title=""
         isLoading={this.props.isLoading}
         options={this.state.options}
-        detailPanel={(rowData) => {
-          return (
-            <RepoContentsComponent pull={rowData} token={this.props.token} />
-          );
-        }}
+        onRowClick={(event, rowData, togglePanel) => togglePanel()}
+        detailPanel={[
+          {
+            tooltip: "Show Project",
+            render: (rowData) => {
+              return (
+                <RepoContentsComponent
+                  pull={rowData}
+                  token={this.props.token}
+                />
+              );
+            },
+          },
+        ]}
       />
     );
   }

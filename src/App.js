@@ -43,8 +43,6 @@ class App extends React.Component {
 
     this.authRepo.registerOnAuthListener(
       (user) => {
-        console.log("user");
-
         if (user) {
           this.githubRepo.setToken().then((u) => {
             this.loadHomeworkRepos();
@@ -147,9 +145,9 @@ class App extends React.Component {
       <div className="background-body">
         <nav className="navbar navbar-expand-lg navbar-light bg-light static-top mb-5 shadow">
           <div className="container">
-            <a className="navbar-brand" href="#">
+            <div className="navbar-brand font-weight-light">
               CodeYourFuture Homework Tracker
-            </a>
+            </div>
             <button
               className="navbar-toggler"
               type="button"
@@ -168,6 +166,7 @@ class App extends React.Component {
                     className="nav-link"
                     href="https://docs.codeyourfuture.io/volunteers/education/homework-feedback"
                     target="_blank"
+                    rel="noopener noreferrer"
                   >
                     Feedback Guide
                   </a>
@@ -290,6 +289,9 @@ class App extends React.Component {
                 isLoading={this.state.isLoading}
                 data={this.getDataForSchool(this.state.school)}
                 token={this.githubRepo.getToken()}
+                onStudentClicked={(githubLogin) => {
+                  this.onStudentClicked(githubLogin);
+                }}
                 onClick={(id) => {
                   this.onViewPullRequestClick(id);
                 }}

@@ -1,4 +1,4 @@
-import React, { forwardRef } from "react";
+import React from "react";
 import { withRouter } from "react-router-dom";
 import Modal from "react-modal";
 import ProjectTable from "./ProjectTable";
@@ -12,6 +12,10 @@ class StudentModal extends React.Component {
     this.state = {
       data: ProjectSpecs,
     };
+  }
+
+  componentDidMount() {
+    Modal.setAppElement("#root");
   }
 
   componentDidUpdate(prevProps) {
@@ -92,17 +96,6 @@ class StudentModal extends React.Component {
   }
 
   render() {
-    const customStyles = {
-      content: {
-        top: "50%",
-        left: "50%",
-        right: "auto",
-        bottom: "auto",
-        marginRight: "-50%",
-        transform: "translate(-50%, -50%)",
-      },
-    };
-
     let school = this.getSchoolFromUsername(this.props.student.login);
 
     return (
@@ -113,27 +106,35 @@ class StudentModal extends React.Component {
         }}
         contentLabel="Example Modal"
       >
-        <div class="container">
-          <div class="media">
+        <div className="container">
+          <div className="media">
             <img
-              class="align-self-start mr-3"
+              className="align-self-start mr-3"
               height="128"
               width="128"
               src={this.props.student.avatar_url}
               alt={this.getStudentName() + "'s Avatar"}
             />
-            <div class="media-body">
-              <h3 class="mt-0">{this.getStudentName()}</h3>
+            <div className="media-body">
+              <h3 className="mt-0">{this.getStudentName()}</h3>
               <p>
                 School: {school.name}
                 <br />
                 Student Tracker:{" "}
-                <a href={school.tracker} target="_blank">
+                <a
+                  href={school.tracker}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   Link
                 </a>
                 <br />
                 Github Profile:{" "}
-                <a href={this.props.student.html_url} target="_blank">
+                <a
+                  href={this.props.student.html_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   Link
                 </a>
               </p>
@@ -153,13 +154,13 @@ class StudentModal extends React.Component {
           />
         </div>
         <hr />
-        <div class="container">
+        {/* <div class="container">
           <h2 className="font-weight-light">Projects</h2>
           <ProjectTable
             data={this.getProjectDetails()}
             studentName={this.props.student.login}
           />
-        </div>
+        </div> */}
       </Modal>
     );
   }

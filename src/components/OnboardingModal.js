@@ -1,4 +1,4 @@
-import React, { forwardRef } from "react";
+import React from "react";
 import { withRouter } from "react-router-dom";
 import Modal from "react-modal";
 
@@ -34,6 +34,7 @@ class OnboardingModal extends React.Component {
                 <a
                   href="https://docs.codeyourfuture.io/volunteers/education/homework-feedback"
                   target="_blank"
+                  rel="noopener noreferrer"
                 >
                   here
                 </a>
@@ -65,6 +66,7 @@ class OnboardingModal extends React.Component {
                 <a
                   href="https://docs.codeyourfuture.io/volunteers/education/homework-feedback#labelling-the-pull-request"
                   target="_blank"
+                  rel="noopener noreferrer"
                 >
                   here
                 </a>{" "}

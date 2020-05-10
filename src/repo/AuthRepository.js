@@ -5,14 +5,14 @@ class AuthRepository {
 
   registerOnAuthListener(userLoggedIn, userNotLoggedIn, onError) {
     this.firebase.onAuthUserListener(
-      user => {
+      (user) => {
         if (user) {
           userLoggedIn(user);
         } else {
           userNotLoggedIn();
         }
       },
-      fallback => {
+      (fallback) => {
         userNotLoggedIn();
       }
     );
@@ -22,16 +22,13 @@ class AuthRepository {
   doSignInWithGithub(onError) {
     this.firebase
       .doSignInWithGithub()
-      .then(result => {
+      .then((result) => {
         console.log(result);
         this.token = result.credential.accessToken;
         let data = { token: result.credential.accessToken };
-        this.firebase
-          .users()
-          .doc(result.user.uid)
-          .set(data);
+        this.firebase.users().doc(result.user.uid).set(data);
       })
-      .catch(error => {
+      .catch((error) => {
         onError(error);
       });
   }
@@ -45,14 +42,11 @@ class AuthRepository {
   }
 
   getToken() {
-    console.log("CURRENT_USER " + this.getCurrentUser().uid);
-
     return this.firebase
       .users()
       .doc(this.getCurrentUser().uid)
       .get()
-      .then(user => {
-        console.log("TOKEN " + user.data().token);
+      .then((user) => {
         return user.data().token;
       });
   }

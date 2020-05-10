@@ -1,4 +1,4 @@
-import React, { forwardRef } from "react";
+import React from "react";
 import { withRouter } from "react-router-dom";
 
 class RepoContentsComponent extends React.Component {
@@ -24,14 +24,12 @@ class RepoContentsComponent extends React.Component {
         return response.json();
       })
       .then((json) => {
-        console.log(json);
         this.setState({ pullData: json });
       });
   }
 
   getFolderNameFromPath(path) {
     let split = path.split("/");
-    console.log(split);
     let folderName = split[split.length - 2];
     if (folderName === undefined) {
       return split[0];
@@ -42,7 +40,6 @@ class RepoContentsComponent extends React.Component {
 
   getFolderAndFileNameFromPath(path) {
     let split = path.split("/");
-    console.log(split);
     let folderName = split[split.length - 2];
     let fileName = split[split.length - 1];
     if (folderName === undefined) {
@@ -53,6 +50,10 @@ class RepoContentsComponent extends React.Component {
   }
 
   getHTMLButtons() {
+    if (this.state.pullData === undefined || this.state.pullData.length === 0) {
+      return this.getLoading();
+    }
+
     return this.state.pullData
       .filter((file) => {
         return file.path.includes(".html");
@@ -64,6 +65,7 @@ class RepoContentsComponent extends React.Component {
             key={file.path}
             href={file.href}
             target="_blank"
+            rel="noopener noreferrer"
           >
             {this.getFolderNameFromPath(file.path)}
           </a>
@@ -71,7 +73,20 @@ class RepoContentsComponent extends React.Component {
       });
   }
 
+  getLoading() {
+    return (
+      <div className="spinner-border" role="status">
+        <span className="sr-only">Loading...</span>
+      </div>
+    );
+  }
+
   getOtherButtons() {
+    if (this.state.pullData === undefined || this.state.pullData.length === 0) {
+      console.log("Get Loading");
+      return this.getLoading();
+    }
+
     return this.state.pullData
       .filter((file) => {
         return file.path.includes(".html") === false;
@@ -83,6 +98,7 @@ class RepoContentsComponent extends React.Component {
             key={file.path}
             href={file.href}
             target="_blank"
+            rel="noopener noreferrer"
           >
             {this.getFolderAndFileNameFromPath(file.path)}
           </a>
