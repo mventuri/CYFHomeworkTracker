@@ -108,10 +108,11 @@ class RepoContentsComponent extends React.Component {
 
   render() {
     return (
-      <div class="container">
-        <h5>Projects</h5>
+      <div>
+        <h2 className="font-weight-light">Projects</h2>
+        <h3 className="font-weight-light">Websites</h3>
         <div>{this.getHTMLButtons()}</div>
-        <h5>Supporting Files</h5>
+        <h3 className="font-weight-light">Supporting Files</h3>
         <div>{this.getOtherButtons()}</div>
       </div>
     );

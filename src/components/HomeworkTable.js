@@ -130,71 +130,17 @@ class HomeworkTable extends React.Component {
     {
       render: (rowData) => {
         return (
-          <a
-            className="btn btn-outline-primary btn-sm"
-            href={"https://www.gitpod.io/#" + rowData.html_url}
+          <div
+            className="btn btn-primary btn"
             role="button"
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => {
-              this.onViewPullRequestClicked(rowData.id);
+              this.props.onReviewClicked(rowData);
             }}
           >
-            View Source
-          </a>
-        );
-      },
-    },
-    {
-      render: (rowData) => {
-        return (
-          <Popover
-            isOpen={this.state["isGitPopoverOpen" + rowData.number]}
-            position={"top"}
-            content={
-              <div className="card shadow my-1">
-                <div className="card-body p-2">
-                  <p>Copied to clipboard!</p>
-                  <p>Paste into a terminal to retrieve pull request.</p>
-                </div>
-              </div>
-            }
-            onClickOutside={() => {
-              let state = {};
-              state["isGitPopoverOpen" + rowData.number] = false;
-              this.setState(state);
-            }}
-          >
-            <div
-              className="btn btn-outline-primary btn-sm"
-              onClick={() => {
-                this.copyToClipboard(rowData.number);
-                let state = {};
-                state["isGitPopoverOpen" + rowData.number] = true;
-                this.setState(state);
-              }}
-            >
-              Copy Git Command
-            </div>
-          </Popover>
-        );
-      },
-    },
-    {
-      render: (rowData) => {
-        return (
-          <a
-            className="btn btn-outline-secondary btn-sm"
-            href={rowData.html_url}
-            role="button"
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => {
-              this.onViewPullRequestClicked(rowData.id);
-            }}
-          >
-            View Pull Request
-          </a>
+            Review Homework
+          </div>
         );
       },
     },
@@ -205,22 +151,9 @@ class HomeworkTable extends React.Component {
     pageSize: this.props.size || 20,
     defaultExpanded: true,
     headerStyle: {
-      zIndex: 1,
+      zIndex: 0,
     },
   };
-
-  copyToClipboard(pullNumber) {
-    var dummy = document.createElement("textarea");
-    document.body.appendChild(dummy);
-    dummy.value = this.getGitCommand(pullNumber);
-    dummy.select();
-    document.execCommand("copy");
-    document.body.removeChild(dummy);
-  }
-
-  getGitCommand(pullNumber) {
-    return `git fetch origin "+pull/${pullNumber}/head:pull/${pullNumber}/head" && git checkout "refs/heads/pull/${pullNumber}/head"`;
-  }
 
   dateToString(a) {
     var months = [
@@ -282,20 +215,9 @@ class HomeworkTable extends React.Component {
         title=""
         isLoading={this.props.isLoading}
         options={this.state.options}
-        onRowClick={(event, rowData, togglePanel) => togglePanel()}
-        detailPanel={[
-          {
-            tooltip: "Show Project",
-            render: (rowData) => {
-              return (
-                <RepoContentsComponent
-                  pull={rowData}
-                  token={this.props.token}
-                />
-              );
-            },
-          },
-        ]}
+        onRowClick={(event, rowData, togglePanel) =>
+          this.props.onReviewClicked(rowData)
+        }
       />
     );
   }

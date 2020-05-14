@@ -6,6 +6,7 @@ import cityConfig from "./config/CityConfig.js";
 import { withRouter } from "react-router-dom";
 import cookie from "react-cookies";
 import StudentModal from "./components/StudentModal";
+import ReviewModal from "./components/ReviewModal";
 import OnboardingModal from "./components/OnboardingModal";
 
 class App extends React.Component {
@@ -18,6 +19,7 @@ class App extends React.Component {
       showOnboarding: false,
       showModal: false,
       student: {},
+      reviewModal: {},
     };
 
     this.githubRepo = this.props.githubRepo;
@@ -140,6 +142,12 @@ class App extends React.Component {
     this.reviewRepo.reportRepoInReview(id, "Chris");
   }
 
+  onReviewClicked(pullRequest) {
+    this.setState({
+      reviewModal: { show: true, pullRequest: pullRequest },
+    });
+  }
+
   render() {
     return (
       <div className="background-body">
@@ -184,6 +192,16 @@ class App extends React.Component {
           closeModal={() => {
             this.setState({
               showModal: false,
+            });
+          }}
+        />
+        <ReviewModal
+          showModal={this.state.reviewModal.show}
+          pullRequest={this.state.reviewModal.pullRequest}
+          token={this.githubRepo.getToken()}
+          closeModal={() => {
+            this.setState({
+              reviewModal: { show: false },
             });
           }}
         />
@@ -284,11 +302,14 @@ class App extends React.Component {
                 </div>
               </div>
             </div>
-            <div className="container-fluid">
+            <div className="container">
               <HomeworkTable
                 isLoading={this.state.isLoading}
                 data={this.getDataForSchool(this.state.school)}
                 token={this.githubRepo.getToken()}
+                onReviewClicked={(pullRequest) => {
+                  this.onReviewClicked(pullRequest);
+                }}
                 onStudentClicked={(githubLogin) => {
                   this.onStudentClicked(githubLogin);
                 }}
