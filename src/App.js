@@ -199,6 +199,7 @@ class App extends React.Component {
           showModal={this.state.reviewModal.show}
           pullRequest={this.state.reviewModal.pullRequest}
           token={this.githubRepo.getToken()}
+          school={this.state.school}
           closeModal={() => {
             this.setState({
               reviewModal: { show: false },

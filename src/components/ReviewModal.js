@@ -52,7 +52,7 @@ class ReviewModal extends React.Component {
         }}
       >
         <div
-          className="btn btn-primary mt-2 min-200"
+          className="btn btn-primary m-1 min-200"
           onClick={() => {
             this.copyToClipboard(this.props.pullRequest.number);
             let state = {};
@@ -69,7 +69,7 @@ class ReviewModal extends React.Component {
   getViewSourceButton() {
     return (
       <a
-        className="btn btn-primary mt-2 min-200"
+        className="btn btn-primary m-1 min-200"
         href={"https://www.gitpod.io/#" + this.props.pullRequest.html_url}
         role="button"
         target="_blank"
@@ -83,7 +83,7 @@ class ReviewModal extends React.Component {
   getFeedbackButton() {
     return (
       <a
-        className="btn btn-primary mt-2 min-200"
+        className="btn btn-primary m-1 min-200"
         href={"https://www.gitpod.io/#" + this.props.pullRequest.html_url}
         role="button"
         target="_blank"
@@ -97,13 +97,26 @@ class ReviewModal extends React.Component {
   getOpenPullRequestButton() {
     return (
       <a
-        className="btn btn-primary mt-2 min-200 btn-lg"
+        className="btn btn-primary m-1 min-200 btn-lg"
         href={this.props.pullRequest.html_url}
         role="button"
         target="_blank"
         rel="noopener noreferrer"
       >
         View Pull Request
+      </a>
+    );
+  }
+
+  getGradeButton() {
+    return (
+      <a
+        className="btn btn-primary m-1 min-200 btn-lg"
+        href={this.props.school.tracker}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Give Feedback
       </a>
     );
   }
@@ -137,10 +150,11 @@ class ReviewModal extends React.Component {
         {this.props.showModal === true ? (
           <div className="container">
             <div className="card-body p-3">
-              <h1 className="font-weight-light">Homework Overview</h1>
+              <h1 className="font-weight-light">
+                {this.props.pullRequest.title}
+              </h1>
               <div className="row">
                 <div className="col-9 rightRuleColumn">
-                  <h2 className="font-weight-light">Description</h2>
                   <div className="code">
                     <ReactMarkdown
                       source={this.getPullBody()}
@@ -154,6 +168,7 @@ class ReviewModal extends React.Component {
                 </div>
                 <div className="col-3">
                   {this.getOpenPullRequestButton()}
+                  {this.getGradeButton()}
                   <hr />
                   {this.getGitCommandButton()}
                   {this.getViewSourceButton()}
