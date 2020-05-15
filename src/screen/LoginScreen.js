@@ -9,8 +9,6 @@ class LoginScreen extends React.Component {
       loading: false,
     };
 
-    console.log("Login");
-
     let { history } = this.props;
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -18,7 +16,6 @@ class LoginScreen extends React.Component {
     this.authRepo = this.props.authRepo;
     this.authRepo.registerOnAuthListener(
       (user) => {
-        console.log(user);
         if (user) {
           history.push(process.env.PUBLIC_URL + "/");
           this.showToast("User Logged In. Welcome " + user.email);

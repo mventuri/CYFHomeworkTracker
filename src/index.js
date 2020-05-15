@@ -7,10 +7,10 @@ import Firebase from "./repo/Firebase.js";
 import LoginScreen from "./screen/LoginScreen";
 import AuthRepository from "./repo/AuthRepository";
 import GithubRepository from "./repo/GithubRepository";
-import ReviewRepository from "./repo/ReviewingRepository";
+import StudentRepository from "./repo/StudentRepository";
 
 let firebase = new Firebase();
-let reviewRepo = new ReviewRepository(firebase);
+let studentRepo = new StudentRepository(firebase);
 let authRepo = new AuthRepository(firebase);
 let githubRepo = new GithubRepository(authRepo);
 const routing = (
@@ -23,7 +23,7 @@ const routing = (
           <App
             githubRepo={githubRepo}
             authRepo={authRepo}
-            reviewRepo={reviewRepo}
+            studentRepo={studentRepo}
           />
         )}
       />

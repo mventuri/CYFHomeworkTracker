@@ -83,7 +83,6 @@ class RepoContentsComponent extends React.Component {
 
   getOtherButtons() {
     if (this.state.pullData === undefined || this.state.pullData.length === 0) {
-      console.log("Get Loading");
       return this.getLoading();
     }
 

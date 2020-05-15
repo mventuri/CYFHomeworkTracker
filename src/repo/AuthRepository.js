@@ -23,7 +23,6 @@ class AuthRepository {
     this.firebase
       .doSignInWithGithub()
       .then((result) => {
-        console.log(result);
         this.token = result.credential.accessToken;
         let data = { token: result.credential.accessToken };
         this.firebase.users().doc(result.user.uid).set(data);

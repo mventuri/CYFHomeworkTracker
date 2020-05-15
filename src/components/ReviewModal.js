@@ -80,6 +80,24 @@ class ReviewModal extends React.Component {
     );
   }
 
+  getViewStudentButton() {
+    return (
+      <div
+        className="btn btn-primary m-1 min-200"
+        role="button"
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={() => {
+          this.props.onViewStudentClicked(
+            this.props.pullRequest.head.user.login
+          );
+        }}
+      >
+        View Student
+      </div>
+    );
+  }
+
   getFeedbackButton() {
     return (
       <a
@@ -122,7 +140,6 @@ class ReviewModal extends React.Component {
   }
 
   getPullBody() {
-    console.log(this.props.pullRequest.body);
     return this.props.pullRequest.body.replace(/\n/gi, "\n\n");
   }
 
@@ -172,6 +189,7 @@ class ReviewModal extends React.Component {
                   <hr />
                   {this.getGitCommandButton()}
                   {this.getViewSourceButton()}
+                  {this.getViewStudentButton()}
                 </div>
               </div>
             </div>

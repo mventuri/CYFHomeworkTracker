@@ -52,7 +52,9 @@ class Firebase {
     });
   // *** User API ***
   users = () => this.db.collection("users");
-  inUseData = () => this.db.collection("inUseData");
+  students = () => this.db.collection("students");
+  getStudentByName = (githubName) =>
+    this.students().where("githubName", "==", githubName);
 }
 
 export default Firebase;

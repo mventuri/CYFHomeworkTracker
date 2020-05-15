@@ -17,14 +17,13 @@ class App extends React.Component {
       data: [],
       school: "None",
       showOnboarding: false,
-      showModal: false,
-      student: {},
-      reviewModal: {},
+      studentModal: { show: false, student: {} },
+      reviewModal: { show: false, pullRequest: {} },
     };
 
     this.githubRepo = this.props.githubRepo;
     this.authRepo = this.props.authRepo;
-    this.reviewRepo = this.props.reviewRepo;
+    this.studentRepo = this.props.studentRepo;
   }
 
   componentDidMount() {
@@ -122,87 +121,96 @@ class App extends React.Component {
   }
 
   onStudentClicked(studentName) {
-    this.setState({
-      showModal: true,
-    });
-
     this.githubRepo.getStudent(studentName).then((student) => {
       console.log(student.data);
       this.setState({
-        student: student.data,
+        studentModal: { show: true, student: student.data },
       });
     });
   }
 
-  onViewPullRequestClick(id) {
+  onReviewClicked(pullRequest) {
     if (cookie.load("onboardingShown") === false) {
       this.showOnboarding();
     }
 
-    this.reviewRepo.reportRepoInReview(id, "Chris");
-  }
-
-  onReviewClicked(pullRequest) {
     this.setState({
       reviewModal: { show: true, pullRequest: pullRequest },
     });
   }
 
+  getNavigation() {
+    return (
+      <nav className="navbar navbar-expand-lg navbar-light bg-light static-top mb-5 shadow">
+        <div className="container">
+          <div className="navbar-brand font-weight-light">
+            CodeYourFuture Homework Tracker
+          </div>
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarResponsive"
+            aria-controls="navbarResponsive"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className="collapse navbar-collapse" id="navbarResponsive">
+            <ul className="navbar-nav ml-auto">
+              <li className="nav-item">
+                <a
+                  className="nav-link"
+                  href="https://docs.codeyourfuture.io/volunteers/education/homework-feedback"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Feedback Guide
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    );
+  }
+
   render() {
     return (
       <div className="background-body">
-        <nav className="navbar navbar-expand-lg navbar-light bg-light static-top mb-5 shadow">
-          <div className="container">
-            <div className="navbar-brand font-weight-light">
-              CodeYourFuture Homework Tracker
-            </div>
-            <button
-              className="navbar-toggler"
-              type="button"
-              data-toggle="collapse"
-              data-target="#navbarResponsive"
-              aria-controls="navbarResponsive"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-            >
-              <span className="navbar-toggler-icon"></span>
-            </button>
-            <div className="collapse navbar-collapse" id="navbarResponsive">
-              <ul className="navbar-nav ml-auto">
-                <li className="nav-item">
-                  <a
-                    className="nav-link"
-                    href="https://docs.codeyourfuture.io/volunteers/education/homework-feedback"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Feedback Guide
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </nav>
-        <StudentModal
-          student={this.state.student}
-          githubRepo={this.githubRepo}
-          school={this.state.school}
-          showModal={this.state.showModal}
-          pullRequestData={this.state.data}
-          closeModal={() => {
-            this.setState({
-              showModal: false,
-            });
-          }}
-        />
+        {this.getNavigation()}
         <ReviewModal
           showModal={this.state.reviewModal.show}
           pullRequest={this.state.reviewModal.pullRequest}
           token={this.githubRepo.getToken()}
           school={this.state.school}
+          onViewStudentClicked={(studentName) => {
+            console.log(studentName);
+            this.onStudentClicked(studentName);
+          }}
           closeModal={() => {
             this.setState({
-              reviewModal: { show: false },
+              reviewModal: {
+                show: false,
+                pullRequest: this.state.reviewModal.pullRequest,
+              },
+            });
+          }}
+        />
+        <StudentModal
+          student={this.state.studentModal.student}
+          githubRepo={this.githubRepo}
+          school={this.state.school}
+          showModal={this.state.studentModal.show}
+          pullRequestData={this.state.data}
+          studentRepo={this.studentRepo}
+          closeModal={() => {
+            this.setState({
+              studentModal: {
+                show: false,
+                student: this.state.studentModal.student,
+              },
             });
           }}
         />
@@ -313,9 +321,6 @@ class App extends React.Component {
                 }}
                 onStudentClicked={(githubLogin) => {
                   this.onStudentClicked(githubLogin);
-                }}
-                onClick={(id) => {
-                  this.onViewPullRequestClick(id);
                 }}
               />
             </div>

@@ -11,6 +11,7 @@ class StudentModal extends React.Component {
     super(props);
     this.state = {
       data: ProjectSpecs,
+      school: {},
     };
   }
 
@@ -27,12 +28,18 @@ class StudentModal extends React.Component {
       return;
     }
 
+    this.getAverageHomeworkScore();
+    this.setState({
+      school: this.getSchoolFromUsername(this.props.student.login),
+    });
+  }
+
+  getProjectsOnline() {
     this.state.data.forEach((project, index) => {
       fetch(
         `https://cyf-${this.props.student.login}-${project.shortName}.netlify.com`
       )
         .then((data) => {
-          console.log(data);
           project.success = data.status === 200;
           let projects = this.state.data;
           projects[index] = project;
@@ -95,9 +102,80 @@ class StudentModal extends React.Component {
     });
   }
 
-  render() {
-    let school = this.getSchoolFromUsername(this.props.student.login);
+  getAverageHomeworkScore() {
+    this.props.studentRepo.getHomeworkForStudentByName(
+      this.props.student.login,
+      (homeworkList) => {
+        let total = 0;
 
+        homeworkList.forEach((homework) => {
+          total += homework.result;
+        });
+
+        let average = (total / homeworkList.length).toFixed(2);
+
+        this.setState({ averageHomeworkScore: average });
+      }
+    );
+  }
+
+  getStudentColumn(school) {
+    return (
+      <div>
+        <img
+          className="align-self-start mr-3"
+          height="128"
+          width="128"
+          src={this.props.student.avatar_url}
+          alt={this.getStudentName() + "'s Avatar"}
+        />
+        <h3 className="mt-0">{this.getStudentName()}</h3>
+        <p>
+          School: {school.name}
+          <br />
+          Student Tracker:{" "}
+          <a href={school.tracker} target="_blank" rel="noopener noreferrer">
+            Link
+          </a>
+          <br />
+          Github Profile:{" "}
+          <a
+            href={this.props.student.html_url}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Link
+          </a>
+          <br />
+        </p>
+        <hr />
+        <h3 className="font-weight-light">Average Score</h3>
+        {this.state.averageHomeworkScore}
+      </div>
+    );
+  }
+
+  getDetailsColumn() {
+    return (
+      <div className="container-fluid">
+        <h2 className="font-weight-light">Open Pull Requests</h2>
+        <HomeworkTable
+          onClick={(id) => {
+            this.onViewPullRequestClick(id);
+          }}
+          size={5}
+          search={false}
+          data={this.getPullRequestsForStudent(this.props.student.login)}
+        />
+        {/* <ProjectTable
+          data={this.getProjectDetails()}
+          studentName={this.props.student.login}
+        /> */}
+      </div>
+    );
+  }
+
+  render() {
     return (
       <Modal
         isOpen={this.props.showModal}
@@ -106,61 +184,14 @@ class StudentModal extends React.Component {
         }}
         contentLabel="Example Modal"
       >
-        <div className="container">
-          <div className="media">
-            <img
-              className="align-self-start mr-3"
-              height="128"
-              width="128"
-              src={this.props.student.avatar_url}
-              alt={this.getStudentName() + "'s Avatar"}
-            />
-            <div className="media-body">
-              <h3 className="mt-0">{this.getStudentName()}</h3>
-              <p>
-                School: {school.name}
-                <br />
-                Student Tracker:{" "}
-                <a
-                  href={school.tracker}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Link
-                </a>
-                <br />
-                Github Profile:{" "}
-                <a
-                  href={this.props.student.html_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Link
-                </a>
-              </p>
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col-2 rightRuleColumn">
+              {this.getStudentColumn(this.state.school)}
             </div>
+            <div className="col-10">{this.getDetailsColumn()}</div>
           </div>
         </div>
-        <hr />
-        <div class="container">
-          <h2 className="font-weight-light">Open Pull Requests</h2>
-          <HomeworkTable
-            onClick={(id) => {
-              this.onViewPullRequestClick(id);
-            }}
-            size={5}
-            search={false}
-            data={this.getPullRequestsForStudent(this.props.student.login)}
-          />
-        </div>
-        <hr />
-        {/* <div class="container">
-          <h2 className="font-weight-light">Projects</h2>
-          <ProjectTable
-            data={this.getProjectDetails()}
-            studentName={this.props.student.login}
-          />
-        </div> */}
       </Modal>
     );
   }
