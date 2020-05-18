@@ -1,7 +1,6 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import Modal from "react-modal";
-import ProjectTable from "./ProjectTable";
 import ProjectSpecs from "../config/ProjectSpecs";
 import CityConfig from "../config/CityConfig";
 import HomeworkTable from "../components/HomeworkTable";

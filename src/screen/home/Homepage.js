@@ -1,9 +1,8 @@
-import React, { forwardRef } from "react";
+import React from "react";
 import "../../main.css";
 import cityConfig from "../../config/CityConfig.js";
 import { withRouter } from "react-router-dom";
 import cookie from "react-cookies";
-import StudentModal from "../../components/StudentModal";
 import Sidebar from "../../components/Sidebar";
 
 class Homepage extends React.Component {
@@ -46,7 +45,7 @@ class Homepage extends React.Component {
     );
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (this.props.match.params.city !== nextProps.match.params.city) {
       this.city = nextProps.match.params.city;
       this.setSchoolFromDefault();

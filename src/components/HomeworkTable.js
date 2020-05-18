@@ -1,6 +1,5 @@
 import React, { forwardRef } from "react";
 import MaterialTable from "material-table";
-import Popover from "react-tiny-popover";
 import { withRouter } from "react-router-dom";
 import AddBox from "@material-ui/icons/AddBox";
 import ArrowUpward from "@material-ui/icons/ArrowUpward";
@@ -84,14 +83,14 @@ class HomeworkTable extends React.Component {
       field: "user.login",
       render: (rowData) => {
         return (
-          <a
+          <button
             href="#"
             onClick={() => {
               this.props.onStudentClicked(rowData.user.login);
             }}
           >
             {rowData.user.login}
-          </a>
+          </button>
         );
       },
     },
@@ -202,8 +201,6 @@ class HomeworkTable extends React.Component {
       options: this.options,
     };
   }
-
-  componentWillReceiveProps() {}
 
   render() {
     return (

@@ -83,8 +83,6 @@ class ProjectTable extends React.Component {
     defaultExpanded: true,
   };
 
-  componentWillReceiveProps() {}
-
   render() {
     return (
       <MaterialTable

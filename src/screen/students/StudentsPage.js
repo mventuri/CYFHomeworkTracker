@@ -1,4 +1,4 @@
-import React, { forwardRef } from "react";
+import React from "react";
 import "../../main.css";
 import cityConfig from "../../config/CityConfig.js";
 import { withRouter } from "react-router-dom";

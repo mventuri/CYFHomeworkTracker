@@ -1,11 +1,10 @@
-import React, { forwardRef } from "react";
+import React from "react";
 import "../../main.css";
 import HomeworkTable from "../../components/HomeworkTable";
 import homeworkRepos from "../../config/HomeworkRepositories.js";
 import cityConfig from "../../config/CityConfig.js";
 import { withRouter } from "react-router-dom";
 import cookie from "react-cookies";
-import StudentModal from "../../components/StudentModal";
 import ReviewModal from "../../components/ReviewModal";
 import OnboardingModal from "../../components/OnboardingModal";
 import Sidebar from "../../components/Sidebar";
