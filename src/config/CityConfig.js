@@ -42,7 +42,7 @@ export default [
     ],
   },
   {
-    name: "Manchester",
+    name: "North-West",
     tracker:
       "https://docs.google.com/spreadsheets/d/1o70LeHJfe8VzMQzv7hKfDV3qzuKpX9cNfB7houm9XQQ/edit#gid=1726249445",
     students: [
@@ -100,7 +100,7 @@ export default [
     ],
   },
   {
-    name: "Birmingham",
+    name: "West-Midlands",
     tracker:
       "https://docs.google.com/spreadsheets/d/1EWtTEGuu8Or0RLMEYM72RBsbhz7fL4WBOEQCZhQ_bEA/edit#gid=1726249445",
     students: [
@@ -131,10 +131,5 @@ export default [
       "Tedros-Ghebrekirstos",
       "zubedauk",
     ],
-  },
-  {
-    name: "All",
-    tracker: "",
-    students: [],
   },
 ];

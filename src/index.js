@@ -2,17 +2,21 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import "./index.css";
-import App from "./App";
+import SelectionScreen from "./screen/select/SelectionScreen";
 import Firebase from "./repo/Firebase.js";
-import LoginScreen from "./screen/LoginScreen";
+import LoginScreen from "./screen/login/LoginScreen";
 import AuthRepository from "./repo/AuthRepository";
 import GithubRepository from "./repo/GithubRepository";
 import StudentRepository from "./repo/StudentRepository";
+import HomeworkPage from "./screen/homework/HomeworkPage";
+import StudentsPage from "./screen/students/StudentsPage";
+import Homepage from "./screen/home/Homepage";
 
 let firebase = new Firebase();
 let studentRepo = new StudentRepository(firebase);
 let authRepo = new AuthRepository(firebase);
 let githubRepo = new GithubRepository(authRepo);
+
 const routing = (
   <Router>
     <div>
@@ -20,7 +24,40 @@ const routing = (
         exact
         path={process.env.PUBLIC_URL + "/"}
         component={() => (
-          <App
+          <SelectionScreen
+            githubRepo={githubRepo}
+            authRepo={authRepo}
+            studentRepo={studentRepo}
+          />
+        )}
+      />
+      <Route
+        exact
+        path={process.env.PUBLIC_URL + "/:city"}
+        component={() => (
+          <Homepage
+            githubRepo={githubRepo}
+            authRepo={authRepo}
+            studentRepo={studentRepo}
+          />
+        )}
+      />
+      <Route
+        exact
+        path={process.env.PUBLIC_URL + "/:city/homework"}
+        component={() => (
+          <HomeworkPage
+            githubRepo={githubRepo}
+            authRepo={authRepo}
+            studentRepo={studentRepo}
+          />
+        )}
+      />
+      <Route
+        exact
+        path={process.env.PUBLIC_URL + "/:city/students"}
+        component={() => (
+          <StudentsPage
             githubRepo={githubRepo}
             authRepo={authRepo}
             studentRepo={studentRepo}
