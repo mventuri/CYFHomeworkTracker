@@ -18,7 +18,7 @@ class LoginScreen extends React.Component {
       (user) => {
         if (user) {
           history.push(process.env.PUBLIC_URL + "/");
-          this.showToast("User Logged In. Welcome " + user.email);
+          console.log("hello");
         }
       },
       () => {},

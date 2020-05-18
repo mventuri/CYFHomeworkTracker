@@ -20,11 +20,11 @@ class SelectionScreen extends React.Component {
     this.authRepo.registerOnAuthListener(
       (user) => {
         if (!user) {
-          history.replace(process.env.PUBLIC_URL + "/login");
+          history.push(process.env.PUBLIC_URL + "/login");
         }
       },
       () => {
-        history.replace(process.env.PUBLIC_URL + "/login");
+        history.push(process.env.PUBLIC_URL + "/login");
       },
       (error) => {
         console.log(error);
@@ -50,7 +50,7 @@ class SelectionScreen extends React.Component {
                       key={city}
                       onClick={() => {
                         this.history.replace(
-                          process.env.PUBLIC_URL + "/" + city.name
+                          process.env.PUBLIC_URL + "/schools/" + city.name
                         );
                       }}
                     >

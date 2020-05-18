@@ -10,18 +10,18 @@ class Sidebar extends React.Component {
 
   goToStudents(location = this.props.currentCity) {
     this.props.history.push(
-      process.env.PUBLIC_URL + "/" + location + "/students"
+      process.env.PUBLIC_URL + "/schools/" + location + "/students"
     );
   }
 
   goToHomework(location = this.props.currentCity) {
     this.props.history.push(
-      process.env.PUBLIC_URL + "/" + location + "/homework"
+      process.env.PUBLIC_URL + "/schools/" + location + "/homework"
     );
   }
 
   goToHome(location = this.props.currentCity) {
-    this.props.history.push(process.env.PUBLIC_URL + "/" + location);
+    this.props.history.push(process.env.PUBLIC_URL + "/schools/" + location);
   }
 
   getCurrentPage() {
@@ -89,9 +89,7 @@ class Sidebar extends React.Component {
                     href="#"
                     key={city.name}
                     onClick={() => {
-                      this.props.history.push(
-                        process.env.PUBLIC_URL + "/" + city.name
-                      );
+                      this.goToHome(city.name);
                     }}
                   >
                     {city.name}

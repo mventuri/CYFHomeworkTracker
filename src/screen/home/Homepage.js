@@ -33,11 +33,11 @@ class Homepage extends React.Component {
             // Do work
           });
         } else {
-          history.replace(process.env.PUBLIC_URL + "/login");
+          history.push(process.env.PUBLIC_URL + "/login");
         }
       },
       () => {
-        history.replace(process.env.PUBLIC_URL + "/login");
+        history.push(process.env.PUBLIC_URL + "/login");
       },
       (error) => {
         console.log(error);
@@ -60,6 +60,7 @@ class Homepage extends React.Component {
   }
 
   setSchool(schoolName) {
+    console.log(schoolName);
     cookie.save("chosenSchool", schoolName, { path: "/" });
     this.setState({ school: this.getSchoolFromName(schoolName) });
   }
@@ -71,6 +72,7 @@ class Homepage extends React.Component {
   }
 
   render() {
+    console.log(this.state.school);
     return (
       <div>
         <div className="row">
@@ -82,16 +84,17 @@ class Homepage extends React.Component {
             />
           </div>
           <div className="background-body col-10">
-            <div className="container-fluid">
-              <div className="card border-0 shadow my-5">
-                <div className="card-body p-5">
-                  <h1 className="font-weight-light">
-                    Welcome to <b>{this.state.school.name}</b>
-                  </h1>
+            {this.state.school === "None" ? null : (
+              <div className="container-fluid">
+                <div className="card border-0 shadow my-5">
+                  <div className="card-body p-5">
+                    <h1 className="font-weight-light">
+                      Welcome to <b>{this.state.school.name}</b>
+                    </h1>
+                  </div>
                 </div>
               </div>
-            </div>
-            {this.state.school === "None" ? null : <div></div>}
+            )}
           </div>
         </div>
       </div>

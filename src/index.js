@@ -33,7 +33,12 @@ const routing = (
       />
       <Route
         exact
-        path={process.env.PUBLIC_URL + "/:city"}
+        path={process.env.PUBLIC_URL + "/login"}
+        component={() => <LoginScreen authRepo={authRepo} />}
+      />
+      <Route
+        exact
+        path={process.env.PUBLIC_URL + "/schools/:city"}
         component={() => (
           <Homepage
             githubRepo={githubRepo}
@@ -44,7 +49,7 @@ const routing = (
       />
       <Route
         exact
-        path={process.env.PUBLIC_URL + "/:city/homework"}
+        path={process.env.PUBLIC_URL + "/schools/:city/homework"}
         component={() => (
           <HomeworkPage
             githubRepo={githubRepo}
@@ -55,7 +60,7 @@ const routing = (
       />
       <Route
         exact
-        path={process.env.PUBLIC_URL + "/:city/students"}
+        path={process.env.PUBLIC_URL + "/schools/:city/students"}
         component={() => (
           <StudentsPage
             githubRepo={githubRepo}
@@ -63,10 +68,6 @@ const routing = (
             studentRepo={studentRepo}
           />
         )}
-      />
-      <Route
-        path={process.env.PUBLIC_URL + "/login"}
-        component={() => <LoginScreen authRepo={authRepo} />}
       />
     </div>
   </Router>
