@@ -32,71 +32,73 @@ class Sidebar extends React.Component {
 
   render() {
     return (
-      <div className="sidebar pl-3 pr-3">
-        <div>
-          <button
-            type="button"
-            className="btn btn-primary btn-lg w-100 mt-5"
-            onClick={() => {
-              this.goToHome();
-            }}
-          >
-            Home
-            <i className="fa fa-home ml-2"></i>
-          </button>
-        </div>
-        <div>
-          <button
-            type="button"
-            className="btn btn-primary btn-lg w-100 mt-2"
-            onClick={() => {
-              this.goToHomework();
-            }}
-          >
-            Homework
-            <i className="fa fa-book ml-2"></i>
-          </button>
-        </div>
-        <div>
-          <button
-            type="button"
-            className="btn btn-primary btn-lg w-100 mt-2"
-            onClick={() => {
-              this.goToStudents();
-            }}
-          >
-            Students
-            <i className="fa fa-user-graduate ml-2"></i>
-          </button>
-        </div>
-        <hr />
-        <div className="btn-group w-100">
-          <button
-            className="btn btn-secondary btn-lg dropdown-toggle"
-            type="button"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
-            {this.props.school.name}
-          </button>
-          <div className="dropdown-menu">
-            {cityConfig.map((city) => {
-              return (
-                <div
-                  className="dropdown-item"
-                  href="#"
-                  key={city.name}
-                  onClick={() => {
-                    this.props.history.push(
-                      process.env.PUBLIC_URL + "/" + city.name
-                    );
-                  }}
-                >
-                  {city.name}
-                </div>
-              );
-            })}
+      <div className="card h-100">
+        <div className="card-body p-3">
+          <div>
+            <button
+              type="button"
+              className="btn btn-primary btn-lg w-100 mt-5"
+              onClick={() => {
+                this.goToHome();
+              }}
+            >
+              Home
+              <i className="fa fa-home ml-2"></i>
+            </button>
+          </div>
+          <div>
+            <button
+              type="button"
+              className="btn btn-primary btn-lg w-100 mt-2"
+              onClick={() => {
+                this.goToHomework();
+              }}
+            >
+              Homework
+              <i className="fa fa-book ml-2"></i>
+            </button>
+          </div>
+          <div>
+            <button
+              type="button"
+              className="btn btn-primary btn-lg w-100 mt-2"
+              onClick={() => {
+                this.goToStudents();
+              }}
+            >
+              Students
+              <i className="fa fa-user-graduate ml-2"></i>
+            </button>
+          </div>
+          <hr />
+          <div className="btn-group w-100">
+            <button
+              className="btn btn-secondary btn-lg dropdown-toggle"
+              type="button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              {this.props.school.name}
+            </button>
+            <div className="dropdown-menu">
+              {cityConfig.map((city) => {
+                return (
+                  <div
+                    className="dropdown-item"
+                    href="#"
+                    key={city.name}
+                    onClick={() => {
+                      this.props.history.push(
+                        process.env.PUBLIC_URL + "/" + city.name
+                      );
+                    }}
+                  >
+                    {city.name}
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
