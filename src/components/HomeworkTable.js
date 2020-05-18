@@ -18,7 +18,6 @@ import SaveAlt from "@material-ui/icons/SaveAlt";
 import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 import cityConfig from "../config/CityConfig.js";
-import RepoContentsComponent from "./RepoContentsComponent.js";
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
