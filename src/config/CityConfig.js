@@ -132,9 +132,4 @@ export default [
       "zubedauk",
     ],
   },
-  {
-    name: "All",
-    tracker: "",
-    students: [],
-  },
 ];

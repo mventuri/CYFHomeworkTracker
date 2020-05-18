@@ -30,6 +30,7 @@ class HomeworkPage extends React.Component {
 
   componentDidMount() {
     let { history } = this.props;
+    this.history = history;
 
     this.setState({
       isLoading: true,
@@ -134,7 +135,11 @@ class HomeworkPage extends React.Component {
       <div>
         <div className="row">
           <div className="col-2">
-            <Sidebar school={this.state.school} />
+            <Sidebar
+              school={this.state.school}
+              history={this.history}
+              currentCity={this.city}
+            />
           </div>
           <div className="background-body col-10">
             <ReviewModal
@@ -151,22 +156,6 @@ class HomeworkPage extends React.Component {
                   reviewModal: {
                     show: false,
                     pullRequest: this.state.reviewModal.pullRequest,
-                  },
-                });
-              }}
-            />
-            <StudentModal
-              student={this.state.studentModal.student}
-              githubRepo={this.githubRepo}
-              school={this.state.school}
-              showModal={this.state.studentModal.show}
-              pullRequestData={this.state.data}
-              studentRepo={this.studentRepo}
-              closeModal={() => {
-                this.setState({
-                  studentModal: {
-                    show: false,
-                    student: this.state.studentModal.student,
                   },
                 });
               }}
@@ -192,26 +181,6 @@ class HomeworkPage extends React.Component {
             </div>
             {this.state.school === "None" ? null : (
               <div>
-                <div className="container-fluid">
-                  <div className="card border-0 shadow my-5">
-                    <div className="card-body p-5">
-                      <h1 className="font-weight-light">Students</h1>
-                      {this.state.school.students.map((studentName) => {
-                        return (
-                          <button
-                            key={studentName}
-                            className="btn btn-outline-secondary btn-sm m-1"
-                            onClick={() => {
-                              this.onStudentClicked(studentName);
-                            }}
-                          >
-                            {studentName}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-                </div>
                 <div className="container-fluid">
                   <div className="card border-0 shadow my-5">
                     <div className="card-body p-5">

@@ -49,7 +49,7 @@ class SelectionScreen extends React.Component {
                       class="btn btn-primary btn-lg m-2"
                       onClick={() => {
                         this.history.replace(
-                          process.env.PUBLIC_URL + "/" + city.name + "/homework"
+                          process.env.PUBLIC_URL + "/" + city.name
                         );
                       }}
                     >

@@ -5,11 +5,12 @@ import "./index.css";
 import SelectionScreen from "./screen/select/SelectionScreen";
 import Firebase from "./repo/Firebase.js";
 import LoginScreen from "./screen/login/LoginScreen";
-import HomeScreen from "./screen/select/SelectionScreen";
 import AuthRepository from "./repo/AuthRepository";
 import GithubRepository from "./repo/GithubRepository";
 import StudentRepository from "./repo/StudentRepository";
 import HomeworkPage from "./screen/homework/HomeworkPage";
+import StudentsPage from "./screen/students/StudentsPage";
+import Homepage from "./screen/home/Homepage";
 
 let firebase = new Firebase();
 let studentRepo = new StudentRepository(firebase);
@@ -31,9 +32,32 @@ const routing = (
         )}
       />
       <Route
+        exact
+        path={process.env.PUBLIC_URL + "/:city"}
+        component={() => (
+          <Homepage
+            githubRepo={githubRepo}
+            authRepo={authRepo}
+            studentRepo={studentRepo}
+          />
+        )}
+      />
+      <Route
+        exact
         path={process.env.PUBLIC_URL + "/:city/homework"}
         component={() => (
           <HomeworkPage
+            githubRepo={githubRepo}
+            authRepo={authRepo}
+            studentRepo={studentRepo}
+          />
+        )}
+      />
+      <Route
+        exact
+        path={process.env.PUBLIC_URL + "/:city/students"}
+        component={() => (
+          <StudentsPage
             githubRepo={githubRepo}
             authRepo={authRepo}
             studentRepo={studentRepo}
