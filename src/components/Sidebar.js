@@ -32,7 +32,7 @@ class Sidebar extends React.Component {
 
   render() {
     return (
-      <div className="card h-100">
+      <div className="card sidebar">
         <div className="card-body p-3">
           <div>
             <button
