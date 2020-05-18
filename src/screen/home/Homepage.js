@@ -4,12 +4,22 @@ import cityConfig from "../../config/CityConfig.js";
 import { withRouter } from "react-router-dom";
 import cookie from "react-cookies";
 import Sidebar from "../../components/Sidebar";
+import {
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  BarChart,
+  Legend,
+  Bar,
+  ResponsiveContainer,
+} from "recharts";
 
 class Homepage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      school: "None",
+      attendanceData: [],
     };
 
     this.githubRepo = this.props.githubRepo;
@@ -43,12 +53,29 @@ class Homepage extends React.Component {
         console.log(error);
       }
     );
+
+    this.getAttendanceForStudents();
+  }
+
+  componentDidUpdate() {
+    this.getAttendanceForStudents();
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
     if (this.props.match.params.city !== nextProps.match.params.city) {
       this.city = nextProps.match.params.city;
       this.setSchoolFromDefault();
+    }
+  }
+
+  getAttendanceForStudents() {
+    if (this.state.school !== undefined) {
+      this.studentRepo.getAttendanceByWeek(
+        this.state.school,
+        (orderedAttendanceData) => {
+          this.setState({ attendanceData: orderedAttendanceData });
+        }
+      );
     }
   }
 
@@ -72,7 +99,6 @@ class Homepage extends React.Component {
   }
 
   render() {
-    console.log(this.state.school);
     return (
       <div>
         <div className="row">
@@ -84,13 +110,33 @@ class Homepage extends React.Component {
             />
           </div>
           <div className="background-body col-10">
-            {this.state.school === "None" ? null : (
-              <div className="container-fluid">
-                <div className="card border-0 shadow my-5">
-                  <div className="card-body p-5">
-                    <h1 className="font-weight-light">
-                      Welcome to <b>{this.state.school.name}</b>
-                    </h1>
+            {this.state.school === undefined ? null : (
+              <div>
+                <div className="container-fluid">
+                  <div className="card border-0 shadow my-4">
+                    <div className="card-body p-3">
+                      <h1 className="font-weight-light">
+                        Welcome to <b>{this.state.school.name}</b>
+                      </h1>
+                    </div>
+                  </div>
+                </div>
+                <div className="container-fluid">
+                  <div className="card border-0 shadow">
+                    <div className="card-body p-3">
+                      <h1 className="font-weight-light">Student Attendance</h1>
+                      <ResponsiveContainer height={333}>
+                        <BarChart data={this.state.attendanceData}>
+                          <CartesianGrid strokeDasharray="3 3" />
+                          <XAxis dataKey="name" />
+                          <YAxis />
+                          <Tooltip />
+                          <Legend />
+                          <Bar dataKey="students" fill="#8884d8" />
+                          <Bar dataKey="lateStudents" fill="#82ca9d" />
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </div>
                   </div>
                 </div>
               </div>

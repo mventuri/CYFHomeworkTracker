@@ -55,6 +55,7 @@ class Firebase {
   students = () => this.db.collection("students");
   getStudentByName = (githubName) =>
     this.students().where("githubName", "==", githubName);
+  getAllStudents = () => this.students();
 }
 
 export default Firebase;
