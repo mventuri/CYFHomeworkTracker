@@ -46,7 +46,8 @@ class SelectionScreen extends React.Component {
                   return (
                     <button
                       type="button"
-                      class="btn btn-primary btn-lg m-2"
+                      className="btn btn-primary btn-lg m-2"
+                      key={city}
                       onClick={() => {
                         this.history.replace(
                           process.env.PUBLIC_URL + "/" + city.name
