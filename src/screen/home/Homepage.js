@@ -70,12 +70,11 @@ class Homepage extends React.Component {
 
   getAttendanceForStudents() {
     if (this.state.school !== undefined) {
-      this.studentRepo.getAttendanceByWeek(
-        this.state.school,
-        (orderedAttendanceData) => {
-          this.setState({ attendanceData: orderedAttendanceData });
-        }
-      );
+      this.studentRepo
+        .getAttendanceByWeek(this.state.school)
+        .then((orderedData) => {
+          this.setState({ attendanceData: orderedData });
+        });
     }
   }
 

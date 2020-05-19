@@ -15,7 +15,6 @@ class HomeworkPage extends React.Component {
     this.state = {
       isLoading: false,
       data: [],
-      school: "None",
       showOnboarding: false,
       studentModal: { show: false, student: {} },
       reviewModal: { show: false, pullRequest: {} },
@@ -159,27 +158,27 @@ class HomeworkPage extends React.Component {
                 });
               }}
             />
-            <div className="container-fluid">
-              <div className="card border-0 shadow my-5">
-                <div className="card-body p-5">
-                  <h1 className="font-weight-light">
-                    Welcome to the <b>{this.state.school.name}</b> Homework
-                    Tracker
-                  </h1>
-                  <p className="lead">First time here? Need some tips?</p>
-                  <div>
-                    <button
-                      className="btn btn-outline-primary"
-                      onClick={() => this.showOnboarding()}
-                    >
-                      Show Onboarding
-                    </button>
+            {this.state.school === undefined ? null : (
+              <div>
+                <div className="container-fluid">
+                  <div className="card border-0 shadow my-5">
+                    <div className="card-body p-5">
+                      <h1 className="font-weight-light">
+                        Welcome to the <b>{this.state.school.name}</b> Homework
+                        Tracker
+                      </h1>
+                      <p className="lead">First time here? Need some tips?</p>
+                      <div>
+                        <button
+                          className="btn btn-outline-primary"
+                          onClick={() => this.showOnboarding()}
+                        >
+                          Show Onboarding
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
-            {this.state.school === "None" ? null : (
-              <div>
                 <div className="container-fluid">
                   <div className="card border-0 shadow my-5">
                     <div className="card-body p-5">

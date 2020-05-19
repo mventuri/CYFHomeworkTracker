@@ -5,8 +5,8 @@ class StudentRepository {
     this.firebase = firebase;
   }
 
-  getAttendanceByWeek(school, onRetrieve) {
-    this.firebase
+  getAttendanceByWeek(school) {
+    return this.firebase
       .getAllStudents()
       .get()
       .then((querySnapshot) => {
@@ -64,7 +64,7 @@ class StudentRepository {
         });
 
         console.log(ordered);
-        onRetrieve(ordered);
+        return ordered;
       });
   }
 
