@@ -160,9 +160,9 @@ class HomeworkPage extends React.Component {
             />
             {this.state.school === undefined ? null : (
               <div>
-                <div className="container-fluid">
-                  <div className="card border-0 shadow my-5">
-                    <div className="card-body p-5">
+                <div className="container">
+                  <div className="card border-0 shadow my-4">
+                    <div className="card-body p-4">
                       <h1 className="font-weight-light">
                         Welcome to the <b>{this.state.school.name}</b> Homework
                         Tracker
@@ -179,9 +179,9 @@ class HomeworkPage extends React.Component {
                     </div>
                   </div>
                 </div>
-                <div className="container-fluid">
-                  <div className="card border-0 shadow my-5">
-                    <div className="card-body p-5">
+                <div className="container">
+                  <div className="card border-0 shadow my-4">
+                    <div className="card-body p-4">
                       <h1 className="font-weight-light">
                         Remember to give a grade
                       </h1>
@@ -217,7 +217,7 @@ class HomeworkPage extends React.Component {
                     </div>
                   </div>
                 </div>
-                <div className="container-fluid">
+                <div className="container">
                   <HomeworkTable
                     isLoading={this.state.isLoading}
                     data={this.getDataForSchool(this.state.school)}

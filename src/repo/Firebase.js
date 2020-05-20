@@ -56,6 +56,8 @@ class Firebase {
   getStudentByName = (githubName) =>
     this.students().where("githubName", "==", githubName);
   getAllStudents = () => this.students();
+  getStudentsInSchool = (schoolName) =>
+    this.students().where("school", "==", schoolName);
 }
 
 export default Firebase;

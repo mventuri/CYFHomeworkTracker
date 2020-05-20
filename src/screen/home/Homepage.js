@@ -20,6 +20,9 @@ class Homepage extends React.Component {
     super(props);
     this.state = {
       attendanceData: [],
+      averageHomeworkScore: 0,
+      averageAttendance: 0,
+      averageLate: 0,
     };
 
     this.githubRepo = this.props.githubRepo;
@@ -31,10 +34,7 @@ class Homepage extends React.Component {
   componentDidMount() {
     let { history } = this.props;
 
-    let defaultSchool = this.city;
-    if (defaultSchool != null) {
-      this.setSchool(defaultSchool);
-    }
+    this.setSchoolFromDefault();
 
     this.authRepo.registerOnAuthListener(
       (user) => {
@@ -53,12 +53,13 @@ class Homepage extends React.Component {
         console.log(error);
       }
     );
-
-    this.getAttendanceForStudents();
   }
 
-  componentDidUpdate() {
-    this.getAttendanceForStudents();
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevState.school !== this.state.school) {
+      this.getAttendanceForStudents();
+      this.getAverageHomeworkScore();
+    }
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -68,14 +69,57 @@ class Homepage extends React.Component {
     }
   }
 
+  getAverageHomeworkScore() {
+    if (this.state.school !== undefined) {
+      this.studentRepo
+        .getAllHomework(this.state.school)
+        .then((allHomeworks) => {
+          let total = allHomeworks.reduce((acc, homework) => {
+            return (acc += homework.result);
+          }, 0);
+
+          let average = total / allHomeworks.length;
+
+          this.setState({ averageHomeworkScore: average });
+        });
+    }
+  }
+
   getAttendanceForStudents() {
     if (this.state.school !== undefined) {
       this.studentRepo
         .getAttendanceByWeek(this.state.school)
         .then((orderedData) => {
-          this.setState({ attendanceData: orderedData });
+          this.setState({
+            attendanceData: orderedData,
+            averageAttendance: this.calculateAverageAttendance(orderedData),
+            averageLate: this.calculateAverageLate(orderedData),
+          });
         });
     }
+  }
+
+  calculateAverageAttendance(orderedData) {
+    let total = orderedData.reduce((acc, week) => {
+      let students = week.students || 0;
+      let lateStudents = week.lateStudents || 0;
+      let notAttended = week.notAttended || 0;
+
+      return acc + (1 - notAttended / (students + lateStudents));
+    }, 0);
+
+    return (total / orderedData.length) * 100;
+  }
+
+  calculateAverageLate(orderedData) {
+    let total = orderedData.reduce((acc, week) => {
+      let students = week.students || 0;
+      let lateStudents = week.lateStudents || 0;
+
+      return acc + lateStudents / students;
+    }, 0);
+
+    return (total / orderedData.length) * 100;
   }
 
   setSchoolFromDefault() {
@@ -111,19 +155,55 @@ class Homepage extends React.Component {
           <div className="background-body col-10">
             {this.state.school === undefined ? null : (
               <div>
-                <div className="container-fluid">
+                <div className="container">
                   <div className="card border-0 shadow my-4">
-                    <div className="card-body p-3">
+                    <div className="card-body p-4">
                       <h1 className="font-weight-light">
                         Welcome to <b>{this.state.school.name}</b>
                       </h1>
                     </div>
                   </div>
                 </div>
-                <div className="container-fluid">
+                <div className="container">
+                  <div className="row">
+                    <div className="col-4">
+                      <div className="card border-0 shadow">
+                        <div className="card-body p-4">
+                          <h3 className="font-weight-light">
+                            Average Homework
+                          </h3>
+                          <h2>
+                            {this.state.averageHomeworkScore.toFixed(2) + "/10"}
+                          </h2>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-4">
+                      <div className="card border-0 shadow">
+                        <div className="card-body p-4">
+                          <h3 className="font-weight-light">
+                            Average Attendance
+                          </h3>
+                          <h2>
+                            {this.state.averageAttendance.toFixed(2) + "%"}
+                          </h2>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-4">
+                      <div className="card border-0 shadow">
+                        <div className="card-body p-4">
+                          <h3 className="font-weight-light">Average Late</h3>
+                          <h2>{this.state.averageLate.toFixed(2) + "%"}</h2>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="container mt-4">
                   <div className="card border-0 shadow">
-                    <div className="card-body p-3">
-                      <h1 className="font-weight-light">Student Attendance</h1>
+                    <div className="card-body p-4">
+                      <h2 className="font-weight-light">Student Attendance</h2>
                       <ResponsiveContainer height={333}>
                         <BarChart data={this.state.attendanceData}>
                           <CartesianGrid strokeDasharray="3 3" />
@@ -131,8 +211,21 @@ class Homepage extends React.Component {
                           <YAxis />
                           <Tooltip />
                           <Legend />
-                          <Bar dataKey="students" fill="#8884d8" />
-                          <Bar dataKey="lateStudents" fill="#82ca9d" />
+                          <Bar
+                            dataKey="students"
+                            fill="#8884d8"
+                            name="Students"
+                          />
+                          <Bar
+                            dataKey="lateStudents"
+                            fill="#82ca9d"
+                            name="Late Students"
+                          />
+                          <Bar
+                            dataKey="notAttended"
+                            fill="#d12f2f"
+                            name="Not Attended"
+                          />
                         </BarChart>
                       </ResponsiveContainer>
                     </div>

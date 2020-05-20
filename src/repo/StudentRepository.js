@@ -5,7 +5,7 @@ class StudentRepository {
     this.firebase = firebase;
   }
 
-  getAttendanceByWeek(school) {
+  getAllHomework(school) {
     return this.firebase
       .getAllStudents()
       .get()
@@ -13,7 +13,7 @@ class StudentRepository {
         let attendancePromises = querySnapshot.docs
           .map((doc) => {
             if (school.students.includes(doc.data().githubName)) {
-              return doc.ref.collection("attendence").get();
+              return doc.ref.collection("homework").get();
             }
           })
           .filter((doc) => {
@@ -23,8 +23,33 @@ class StudentRepository {
         return Promise.all(attendancePromises);
       })
       .then((results) => {
+        let allHomework = [];
+
+        results.forEach((i) => {
+          i.docs.forEach((y) => {
+            allHomework.push(y.data());
+          });
+        });
+
+        return allHomework;
+      });
+  }
+
+  getAttendanceByWeek(school) {
+    return this.firebase
+      .getStudentsInSchool(school.name)
+      .get()
+      .then((querySnapshot) => {
+        let attendancePromises = querySnapshot.docs.map((doc) => {
+          return doc.ref.collection("attendence").get();
+        });
+
+        return Promise.all(attendancePromises);
+      })
+      .then((results) => {
         let attendedData = [];
         let lateAttendedData = [];
+        let notAttendedData = [];
 
         results.forEach((i) => {
           i.docs.forEach((y) => {
@@ -32,6 +57,7 @@ class StudentRepository {
             let attended =
               y.data()["result"] === "Yes" || y.data()["result"] === "Late";
             let lateAttended = y.data()["result"] === "Late";
+            let notAttended = y.data()["result"] === "No";
 
             if (attended) {
               if (attendedData[week] === undefined) {
@@ -48,6 +74,14 @@ class StudentRepository {
                 lateAttendedData[week] += 1;
               }
             }
+
+            if (notAttended) {
+              if (notAttendedData[week] === undefined) {
+                notAttendedData[week] = 1;
+              } else {
+                notAttendedData[week] += 1;
+              }
+            }
           });
         });
 
@@ -59,17 +93,16 @@ class StudentRepository {
               name: week,
               students: attendedData[week],
               lateStudents: lateAttendedData[week],
+              notAttended: notAttendedData[week],
             };
           }
         });
-
-        console.log(ordered);
         return ordered;
       });
   }
 
   getAttendanceForStudentByName(githubName, onRetrieve) {
-    this.getDetailsForStudentByName(githubName, "attendance", onRetrieve);
+    this.getDetailsForStudentByName(githubName, "attendence", onRetrieve);
   }
 
   getHomeworkForStudentByName(githubName, onRetrieve) {
