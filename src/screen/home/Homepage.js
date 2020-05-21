@@ -66,7 +66,16 @@ class Homepage extends React.Component {
     if (this.props.match.params.city !== nextProps.match.params.city) {
       this.city = nextProps.match.params.city;
       this.setSchoolFromDefault();
+      this.resetState();
     }
+  }
+
+  resetState() {
+    this.setState({
+      averageHomeworkScore: 0,
+      averageAttendance: 0,
+      averageLate: 0,
+    });
   }
 
   getAverageHomeworkScore() {
@@ -141,6 +150,14 @@ class Homepage extends React.Component {
     })[0];
   }
 
+  getLoading() {
+    return (
+      <div class="spinner-border spinner-border-sm" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    );
+  }
+
   render() {
     return (
       <div>
@@ -173,7 +190,10 @@ class Homepage extends React.Component {
                             Average Homework
                           </h3>
                           <h2>
-                            {this.state.averageHomeworkScore.toFixed(2) + "/10"}
+                            {this.state.averageHomeworkScore !== 0
+                              ? this.state.averageHomeworkScore.toFixed(2) +
+                                "/10"
+                              : this.getLoading()}
                           </h2>
                         </div>
                       </div>
@@ -185,7 +205,9 @@ class Homepage extends React.Component {
                             Average Attendance
                           </h3>
                           <h2>
-                            {this.state.averageAttendance.toFixed(2) + "%"}
+                            {this.state.averageAttendance !== 0
+                              ? this.state.averageAttendance.toFixed(2) + "%"
+                              : this.getLoading()}
                           </h2>
                         </div>
                       </div>
@@ -194,7 +216,11 @@ class Homepage extends React.Component {
                       <div className="card border-0 shadow">
                         <div className="card-body p-4">
                           <h3 className="font-weight-light">Average Late</h3>
-                          <h2>{this.state.averageLate.toFixed(2) + "%"}</h2>
+                          <h2>
+                            {this.state.averageLate !== 0
+                              ? this.state.averageLate.toFixed(2) + "%"
+                              : this.getLoading()}
+                          </h2>
                         </div>
                       </div>
                     </div>
