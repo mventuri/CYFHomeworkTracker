@@ -5,6 +5,19 @@ class StudentRepository {
     this.firebase = firebase;
   }
 
+  postStudentNote(githubName, note) {
+    this.getStudentDetailsByName(githubName).then((snapshot) => {
+      snapshot.ref
+        .collection("notes")
+        .doc()
+        .set({ created: Date.now(), note: note });
+    });
+  }
+
+  getStudentsFromSchool(schoolName) {
+    return this.firebase.getStudentsInSchool(schoolName).get();
+  }
+
   getAllHomework(school) {
     return this.firebase
       .getAllStudents()
@@ -14,10 +27,12 @@ class StudentRepository {
           .map((doc) => {
             if (school.students.includes(doc.data().githubName)) {
               return doc.ref.collection("homework").get();
+            } else {
+              return null;
             }
           })
           .filter((doc) => {
-            return doc !== undefined;
+            return doc !== null;
           });
 
         return Promise.all(attendancePromises);
@@ -101,33 +116,35 @@ class StudentRepository {
       });
   }
 
-  getAttendanceForStudentByName(githubName, onRetrieve) {
-    this.getDetailsForStudentByName(githubName, "attendence", onRetrieve);
+  getAttendanceForStudentByName(githubName) {
+    return this.getDetailsForStudentByName(githubName, "attendence");
   }
 
-  getHomeworkForStudentByName(githubName, onRetrieve) {
-    this.getDetailsForStudentByName(githubName, "homework", onRetrieve);
+  getHomeworkForStudentByName(githubName) {
+    return this.getDetailsForStudentByName(githubName, "homework");
   }
 
-  getDetailsForStudentByName(githubName, type, onRetrieve) {
-    this.firebase
-      .getStudentByName(githubName)
-      .get()
-      .then(function (querySnapshot) {
-        return querySnapshot.docs[0].ref;
-      })
+  getDetailsForStudentByName(githubName, type) {
+    return this.getStudentDetailsByName(githubName)
       .then(function (doc) {
-        return doc.collection(type).get();
+        return doc.ref.collection(type).get();
       })
       .then(function (querySnapshot) {
-        let results = querySnapshot.docs.map(function (doc) {
+        return querySnapshot.docs.map(function (doc) {
           return doc.data();
         });
-
-        onRetrieve(results);
       })
       .catch(function (error) {
         console.log("Error getting documents: ", error);
+      });
+  }
+
+  getStudentDetailsByName(githubName) {
+    return this.firebase
+      .getStudentByName(githubName)
+      .get()
+      .then(function (querySnapshot) {
+        return querySnapshot.docs[0];
       });
   }
 }

@@ -20,6 +20,7 @@ class Firebase {
     this.facebookProvider = new app.auth.FacebookAuthProvider();
     this.twitterProvider = new app.auth.TwitterAuthProvider();
     this.githubProvider = new app.auth.GithubAuthProvider();
+    this.githubProvider.addScope("read:org");
   }
 
   // *** Auth API ***
@@ -57,7 +58,7 @@ class Firebase {
     this.students().where("githubName", "==", githubName);
   getAllStudents = () => this.students();
   getStudentsInSchool = (schoolName) =>
-    this.students().where("school", "==", schoolName);
+    this.students().where("school", "==", schoolName).orderBy("name");
 }
 
 export default Firebase;

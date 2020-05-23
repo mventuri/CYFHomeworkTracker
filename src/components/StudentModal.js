@@ -9,8 +9,8 @@ class StudentModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: ProjectSpecs,
       school: {},
+      studentNotes: [],
     };
   }
 
@@ -31,6 +31,24 @@ class StudentModal extends React.Component {
     this.setState({
       school: this.getSchoolFromUsername(this.props.student.login),
     });
+
+    this.props.studentRepo
+      .getStudentDetailsByName(this.props.student.login)
+      .then((student) => {
+        student.ref
+          .collection("notes")
+          .get()
+          .then((query) => {
+            let data = query.docs.map((doc) => {
+              return doc.data();
+            });
+
+            this.setState({
+              studentInfo: student.data(),
+              studentNotes: data,
+            });
+          });
+      });
   }
 
   getProjectsOnline() {
@@ -102,20 +120,19 @@ class StudentModal extends React.Component {
   }
 
   getAverageHomeworkScore() {
-    this.props.studentRepo.getHomeworkForStudentByName(
-      this.props.student.login,
-      (homeworkList) => {
+    this.props.studentRepo
+      .getHomeworkForStudentByName(this.props.student.login)
+      .then((result) => {
         let total = 0;
 
-        homeworkList.forEach((homework) => {
+        result.forEach((homework) => {
           total += homework.result;
         });
 
-        let average = (total / homeworkList.length).toFixed(2);
+        let average = (total / result.length).toFixed(2);
 
         this.setState({ averageHomeworkScore: average });
-      }
-    );
+      });
   }
 
   getStudentColumn(school) {
@@ -157,15 +174,31 @@ class StudentModal extends React.Component {
   getDetailsColumn() {
     return (
       <div className="container-fluid">
-        <h2 className="font-weight-light">Open Pull Requests</h2>
-        <HomeworkTable
+        <h1 className="font-weight-light">Student Record</h1>
+        {this.state.studentNotes.map((note) => {
+          return (
+            <div className="card mt-1" key={note.created}>
+              <div className="card-header">
+                {new Date(note.created).toLocaleString()}
+              </div>
+              <div className="card-body">
+                <p
+                  className="card-text"
+                  dangerouslySetInnerHTML={{ __html: note.note }}
+                ></p>
+              </div>
+            </div>
+          );
+        })}
+
+        {/* <HomeworkTable
           onClick={(id) => {
             this.onViewPullRequestClick(id);
           }}
           size={5}
           search={false}
           data={this.getPullRequestsForStudent(this.props.student.login)}
-        />
+        /> */}
         {/* <ProjectTable
           data={this.getProjectDetails()}
           studentName={this.props.student.login}

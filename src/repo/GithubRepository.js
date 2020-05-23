@@ -115,6 +115,25 @@ class GithubRepository {
       }) === false
     );
   }
+
+  isUserMentor() {
+    return this.octokit.users
+      .getAuthenticated()
+      .then((user) => {
+        return this.checkTeamMentor(user.data.login);
+      })
+      .then((response) => {
+        return response.data.state === "active";
+      });
+  }
+
+  checkTeamMentor(login) {
+    return this.octokit.teams.getMembershipInOrg({
+      org: "CodeYourFuture",
+      team_slug: "mentors",
+      username: login,
+    });
+  }
 }
 
 export default GithubRepository;

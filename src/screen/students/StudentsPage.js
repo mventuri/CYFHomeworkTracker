@@ -4,6 +4,7 @@ import cityConfig from "../../config/CityConfig.js";
 import { withRouter } from "react-router-dom";
 import cookie from "react-cookies";
 import StudentModal from "../../components/StudentModal";
+import ReviewClassModal from "../../components/ReviewClassModal";
 import Sidebar from "../../components/Sidebar";
 
 class StudentPage extends React.Component {
@@ -12,10 +13,10 @@ class StudentPage extends React.Component {
     this.state = {
       isLoading: false,
       data: [],
-      school: "None",
       showOnboarding: false,
       studentModal: { show: false, student: {} },
-      reviewModal: { show: false, pullRequest: {} },
+      reviewClassModal: { show: false },
+      isMentor: true,
     };
 
     this.githubRepo = this.props.githubRepo;
@@ -41,6 +42,7 @@ class StudentPage extends React.Component {
         if (user) {
           this.githubRepo.setToken().then((u) => {
             this.setStudentFromParams();
+            this.checkVisibility();
           });
         } else {
           history.replace(process.env.PUBLIC_URL + "/login");
@@ -53,6 +55,12 @@ class StudentPage extends React.Component {
         console.log(error);
       }
     );
+  }
+
+  checkVisibility() {
+    this.githubRepo.isUserMentor().then((isMentor) => {
+      this.setState({ isMentor: isMentor });
+    });
   }
 
   setStudentFromParams() {
@@ -83,6 +91,29 @@ class StudentPage extends React.Component {
     });
   }
 
+  showReviewClassModal() {
+    this.setState({
+      reviewClassModal: {
+        show: true,
+      },
+    });
+  }
+
+  getBlockedView() {
+    return (
+      <div className="container">
+        <div className="card border-0 shadow my-4">
+          <div className="card-body p-4">
+            <h1 className="font-weight-light">
+              You do not have access to this section. Please contact your City
+              Coordinator.
+            </h1>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   render() {
     return (
       <div>
@@ -95,55 +126,90 @@ class StudentPage extends React.Component {
             />
           </div>
           <div className="background-body col-10">
-            <StudentModal
-              student={this.state.studentModal.student}
-              githubRepo={this.githubRepo}
-              school={this.state.school}
-              showModal={this.state.studentModal.show}
-              pullRequestData={this.state.data}
-              studentRepo={this.studentRepo}
-              closeModal={() => {
-                this.setState({
-                  studentModal: {
-                    show: false,
-                    student: this.state.studentModal.student,
-                  },
-                });
-              }}
-            />
-            <div className="container">
-              <div className="card border-0 shadow my-4">
-                <div className="card-body p-4">
-                  <h1 className="font-weight-light">
-                    Welcome to the <b>{this.state.school.name}</b> Student
-                    Tracker
-                  </h1>
-                </div>
-              </div>
-            </div>
-            {this.state.school === "None" ? null : (
+            {this.state.isMentor === true ? (
               <div>
-                <div className="container">
-                  <div className="card border-0 shadow my-4">
-                    <div className="card-body p-4">
-                      <h1 className="font-weight-light">Students</h1>
-                      {this.state.school.students.map((studentName) => {
-                        return (
+                <StudentModal
+                  student={this.state.studentModal.student}
+                  githubRepo={this.githubRepo}
+                  school={this.state.school}
+                  showModal={this.state.studentModal.show}
+                  pullRequestData={this.state.data}
+                  studentRepo={this.studentRepo}
+                  closeModal={() => {
+                    this.setState({
+                      studentModal: {
+                        show: false,
+                        student: this.state.studentModal.student,
+                      },
+                    });
+                  }}
+                />
+                {this.state.school === undefined ? null : (
+                  <div>
+                    <ReviewClassModal
+                      school={this.state.school}
+                      showModal={this.state.reviewClassModal.show}
+                      studentRepo={this.studentRepo}
+                      closeModal={() => {
+                        this.setState({
+                          reviewClassModal: {
+                            show: false,
+                          },
+                        });
+                      }}
+                    />
+                    <div className="container">
+                      <div className="card border-0 shadow my-4">
+                        <div className="card-body p-4">
+                          <h1 className="font-weight-light">
+                            Welcome to the <b>{this.state.school.name}</b>{" "}
+                            Student Tracker
+                          </h1>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="container">
+                      <div className="card border-0 shadow my-4">
+                        <div className="card-body p-4">
+                          <h1 className="font-weight-light">Class Actions</h1>
+
                           <button
-                            key={studentName}
-                            className="btn btn-outline-secondary btn-sm m-1"
+                            type="button"
+                            className="btn btn-primary btn-lg"
                             onClick={() => {
-                              this.onStudentClicked(studentName);
+                              this.showReviewClassModal();
                             }}
                           >
-                            {studentName}
+                            Report on Whole Class
                           </button>
-                        );
-                      })}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="container">
+                      <div className="card border-0 shadow my-4">
+                        <div className="card-body p-4">
+                          <h1 className="font-weight-light">Students</h1>
+                          {this.state.school.students.map((studentName) => {
+                            return (
+                              <button
+                                key={studentName}
+                                className="btn btn-outline-secondary btn-sm m-1"
+                                onClick={() => {
+                                  this.onStudentClicked(studentName);
+                                }}
+                              >
+                                {studentName}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
+                )}
               </div>
+            ) : (
+              this.getBlockedView()
             )}
           </div>
         </div>
