@@ -171,25 +171,35 @@ class StudentModal extends React.Component {
     );
   }
 
+  getLoading() {
+    return (
+      <div className="spinner-border" role="status">
+        <span className="sr-only">Loading...</span>
+      </div>
+    );
+  }
+
   getDetailsColumn() {
     return (
       <div className="container-fluid">
         <h1 className="font-weight-light">Student Record</h1>
-        {this.state.studentNotes.map((note) => {
-          return (
-            <div className="card mt-1" key={note.created}>
-              <div className="card-header">
-                {new Date(note.created).toLocaleString()}
-              </div>
-              <div className="card-body">
-                <p
-                  className="card-text"
-                  dangerouslySetInnerHTML={{ __html: note.note }}
-                ></p>
-              </div>
-            </div>
-          );
-        })}
+        {this.state.studentNotes.length === 0
+          ? this.getLoading()
+          : this.state.studentNotes.map((note) => {
+              return (
+                <div className="card mt-1" key={note.created}>
+                  <div className="card-header">
+                    {new Date(note.created).toLocaleString()}
+                  </div>
+                  <div className="card-body p-2">
+                    <p
+                      className="card-text"
+                      dangerouslySetInnerHTML={{ __html: note.note }}
+                    ></p>
+                  </div>
+                </div>
+              );
+            })}
 
         {/* <HomeworkTable
           onClick={(id) => {
