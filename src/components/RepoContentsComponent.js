@@ -54,23 +54,39 @@ class RepoContentsComponent extends React.Component {
       return this.getLoading();
     }
 
-    return this.state.pullData
+    const htmlFiles = this.state.pullData
       .filter((file) => {
         return file.path.includes(".html");
-      })
-      .map((file) => {
-        return (
-          <a
-            className="btn btn-outline-secondary btn-sm m-1"
-            key={file.path}
-            href={file.href}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {this.getFolderNameFromPath(file.path)}
-          </a>
-        );
       });
+
+    const headHomepage = this.props.pull.head.repo.homepage;
+
+    if (htmlFiles.length > 0) {
+      return htmlFiles.map((file) => {
+	  return (
+	    <a
+	      className="btn btn-outline-secondary btn-sm m-1"
+	      key={file.path}
+	      href={file.href}
+	      target="_blank"
+	      rel="noopener noreferrer"
+	    >
+	      {this.getFolderNameFromPath(file.path)}
+	    </a>
+	  );
+	});
+    } else if (headHomepage) {
+      return (
+	<a
+	  className="btn btn-outline-secondary btn-sm m-1"
+	  href={headHomepage}
+	  target="_blank"
+	  rel="noopener noreferrer"
+	>
+	  Deployed site
+	</a>
+      );
+    }
   }
 
   getLoading() {
