@@ -10,7 +10,7 @@ class StudentModal extends React.Component {
     super(props);
     this.state = {
       data: ProjectSpecs,
-      school: {},
+      school: {}
     };
   }
 
@@ -29,7 +29,7 @@ class StudentModal extends React.Component {
 
     this.getAverageHomeworkScore();
     this.setState({
-      school: this.getSchoolFromUsername(this.props.student.login),
+      school: this.getSchoolFromUsername(this.props.student.login)
     });
   }
 
@@ -38,20 +38,20 @@ class StudentModal extends React.Component {
       fetch(
         `https://cyf-${this.props.student.login}-${project.shortName}.netlify.com`
       )
-        .then((data) => {
+        .then(data => {
           project.success = data.status === 200;
           let projects = this.state.data;
           projects[index] = project;
           this.setState({ data: projects });
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         });
     });
   }
 
   getProjectDetails() {
-    return ProjectSpecs.map((project) => {
+    return ProjectSpecs.map(project => {
       return project;
     });
   }
@@ -70,7 +70,7 @@ class StudentModal extends React.Component {
   }
 
   toTitleCase(str) {
-    return str.replace(/\w\S*/g, function (txt) {
+    return str.replace(/\w\S*/g, function(txt) {
       return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
     });
   }
@@ -86,7 +86,7 @@ class StudentModal extends React.Component {
 
     let foundSchool;
 
-    CityConfig.forEach((school) => {
+    CityConfig.forEach(school => {
       if (school.students.includes(username)) {
         foundSchool = school;
       }
@@ -96,7 +96,7 @@ class StudentModal extends React.Component {
   }
 
   getPullRequestsForStudent(username) {
-    return this.props.pullRequestData.filter((pull) => {
+    return this.props.pullRequestData.filter(pull => {
       return pull.user.login === username;
     });
   }
@@ -104,10 +104,10 @@ class StudentModal extends React.Component {
   getAverageHomeworkScore() {
     this.props.studentRepo.getHomeworkForStudentByName(
       this.props.student.login,
-      (homeworkList) => {
+      homeworkList => {
         let total = 0;
 
-        homeworkList.forEach((homework) => {
+        homeworkList.forEach(homework => {
           total += homework.result;
         });
 
@@ -120,9 +120,9 @@ class StudentModal extends React.Component {
 
   getStudentColumn(school) {
     return (
-      <div>
+      <div className="text-center">
         <img
-          className="align-self-start mr-3"
+          className="align-self-start mr-3 rounded-circle"
           height="128"
           width="128"
           src={this.props.student.avatar_url}
@@ -159,7 +159,7 @@ class StudentModal extends React.Component {
       <div className="container-fluid">
         <h2 className="font-weight-light">Open Pull Requests</h2>
         <HomeworkTable
-          onClick={(id) => {
+          onClick={id => {
             this.onViewPullRequestClick(id);
           }}
           size={5}
