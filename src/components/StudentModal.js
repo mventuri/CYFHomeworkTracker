@@ -9,8 +9,10 @@ class StudentModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+
       data: ProjectSpecs,
       school: {}
+
     };
   }
 
@@ -31,6 +33,24 @@ class StudentModal extends React.Component {
     this.setState({
       school: this.getSchoolFromUsername(this.props.student.login)
     });
+
+    this.props.studentRepo
+      .getStudentDetailsByName(this.props.student.login)
+      .then((student) => {
+        student.ref
+          .collection("notes")
+          .get()
+          .then((query) => {
+            let data = query.docs.map((doc) => {
+              return doc.data();
+            });
+
+            this.setState({
+              studentInfo: student.data(),
+              studentNotes: data,
+            });
+          });
+      });
   }
 
   getProjectsOnline() {
@@ -102,20 +122,21 @@ class StudentModal extends React.Component {
   }
 
   getAverageHomeworkScore() {
+
     this.props.studentRepo.getHomeworkForStudentByName(
       this.props.student.login,
       homeworkList => {
         let total = 0;
 
         homeworkList.forEach(homework => {
+
           total += homework.result;
         });
 
-        let average = (total / homeworkList.length).toFixed(2);
+        let average = (total / result.length).toFixed(2);
 
         this.setState({ averageHomeworkScore: average });
-      }
-    );
+      });
   }
 
   getStudentColumn(school) {
@@ -154,18 +175,28 @@ class StudentModal extends React.Component {
     );
   }
 
+  getLoading() {
+    return (
+      <div className="spinner-border" role="status">
+        <span className="sr-only">Loading...</span>
+      </div>
+    );
+  }
+
   getDetailsColumn() {
     return (
       <div className="container-fluid">
+
         <h2 className="font-weight-light">Open Pull Requests</h2>
         <HomeworkTable
           onClick={id => {
+
             this.onViewPullRequestClick(id);
           }}
           size={5}
           search={false}
           data={this.getPullRequestsForStudent(this.props.student.login)}
-        />
+        /> */}
         {/* <ProjectTable
           data={this.getProjectDetails()}
           studentName={this.props.student.login}
